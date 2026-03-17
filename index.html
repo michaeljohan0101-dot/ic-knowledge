@@ -56,6 +56,10 @@
             padding: 1rem 0;
             text-align: center;
             border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .toolbar button {
@@ -66,8 +70,10 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.95rem;
-            margin: 0 5px;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .toolbar button:hover {
@@ -82,6 +88,7 @@
 
         .toolbar button.secondary:hover {
             background: var(--text-secondary);
+            color: white;
         }
 
         /* 搜索框 */
@@ -167,14 +174,6 @@
             padding: 0 20px;
         }
 
-        .category-section {
-            display: none;
-        }
-
-        .category-section.active {
-            display: block;
-        }
-
         .category-title {
             font-size: 2rem;
             color: var(--primary-color);
@@ -240,11 +239,6 @@
             border-color: var(--primary-color);
         }
 
-        .card-action-btn.edit-btn:hover {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-
         .knowledge-card h3 {
             color: var(--primary-color);
             margin-bottom: 12px;
@@ -255,6 +249,10 @@
             color: var(--text-secondary);
             line-height: 1.8;
             margin-bottom: 15px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
 
         .knowledge-card .tags {
@@ -271,7 +269,7 @@
             font-size: 0.8rem;
         }
 
-        /* 编辑模态框 */
+        /* 模态框通用样式 */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -283,6 +281,7 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(4px);
         }
 
         .modal-overlay.active {
@@ -298,6 +297,12 @@
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .modal-header {
@@ -367,6 +372,7 @@
             gap: 10px;
             justify-content: flex-end;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
 
         .form-actions button {
@@ -375,36 +381,45 @@
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
             border: none;
         }
 
-        .btn-primary:hover {
-            background: var(--secondary-color);
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-primary:hover { background: var(--secondary-color); }
+        .btn-secondary { background: var(--border-color); color: var(--text-primary); }
+        .btn-secondary:hover { background: #d1d5db; }
+        .btn-danger { background: var(--danger-color); color: white; }
+        .btn-danger:hover { background: #dc2626; }
+
+        /* 阅读模态框特有样式 */
+        .read-content {
+            background: var(--bg-color);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            white-space: pre-wrap;
         }
 
-        .btn-secondary {
-            background: var(--border-color);
-            color: var(--text-primary);
-            border: none;
+        /* 分类管理表格 */
+        .category-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
-        .btn-secondary:hover {
-            background: var(--text-secondary);
+        .category-table th, .category-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .btn-danger {
-            background: var(--danger-color);
-            color: white;
-            border: none;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
+        .category-table input {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 100%;
         }
 
         /* 添加新卡片按钮 */
@@ -417,32 +432,19 @@
             cursor: pointer;
             transition: all 0.3s;
             color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .add-card:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
         }
 
-        .add-card span {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* 导出导入按钮 */
-        .data-controls {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid var(--border-color);
-        }
-
-        .data-controls p {
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-        }
+        .add-card span { font-size: 3rem; margin-bottom: 10px; }
 
         /* 页脚 */
         footer {
@@ -453,123 +455,22 @@
             margin-top: 60px;
         }
 
-        footer p {
-            opacity: 0.8;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-
-            .knowledge-grid {
-                grid-template-columns: 1fr;
-            }
-
-            nav ul {
-                gap: 5px;
-            }
-
-            nav ul li button {
-                padding: 6px 15px;
-                font-size: 0.85rem;
-            }
-
-            .modal {
-                padding: 20px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .form-actions button {
-                width: 100%;
-            }
-        }
-
-        /* 动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .knowledge-card {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .modal {
-            animation: modalIn 0.3s ease-out;
-        }
-
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* 阅读详情模态框 */
-        .read-modal .modal {
-            max-width: 800px;
-        }
-
-        .read-content {
-            background: var(--bg-color);
-            padding: 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-            line-height: 2;
-            font-size: 1.05rem;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-
-        .read-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid var(--border-color);
-        }
-
-        .read-tags .tag {
-            font-size: 0.9rem;
-            padding: 6px 15px;
-        }
-
-        .read-meta {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 15px;
-        }
-
         /* 提示信息 */
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: var(--text-primary);
+            background: var(--success-color);
             color: white;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 50px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             z-index: 2000;
             transition: transform 0.3s;
         }
 
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast.success {
-            background: var(--success-color);
-        }
-
-        .toast.error {
-            background: var(--danger-color);
-        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
@@ -580,6 +481,7 @@
 
     <div class="toolbar">
         <button onclick="openAddModal()">➕ 添加新知识</button>
+        <button class="secondary" onclick="openCategoryModal()">📂 管理分类</button>
         <button class="secondary" onclick="exportData()">📤 导出数据</button>
         <button class="secondary" onclick="document.getElementById('importFile').click()">📥 导入数据</button>
         <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
@@ -593,39 +495,31 @@
     </div>
 
     <nav>
-        <ul>
-            <li><button class="active" onclick="showCategory('all')">全部</button></li>
-            <li><button onclick="showCategory('basics')">基础概念</button></li>
-            <li><button onclick="showCategory('design')">设计流程</button></li>
-            <li><button onclick="showCategory('manufacturing')">制造工艺</button></li>
-            <li><button onclick="showCategory('packaging')">封装测试</button></li>
-            <li><button onclick="showCategory('devices')">常用器件</button></li>
-            <li><button onclick="showCategory('trends')">行业趋势</button></li>
+        <ul id="navLinks">
+            <!-- 动态加载分类按钮 -->
         </ul>
     </nav>
 
     <main id="mainContent">
-        <!-- 内容将通过 JavaScript 动态加载 -->
+        <!-- 内容动态加载 -->
     </main>
 
     <footer>
         <p>© 2026 集成电路知识库 | IC Knowledge Base</p>
-        <p>让芯片知识更易懂</p>
     </footer>
 
-    <!-- 阅读详情模态框 -->
-    <div class="modal-overlay read-modal" id="readModal">
+    <!-- 阅读模态框 -->
+    <div class="modal-overlay" id="readModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="readTitle">📖 阅读详情</h2>
-                <button class="modal-close" onclick="closeReadModal()">&times;</button>
+                <h2 id="readTitle">📖 知识详情</h2>
+                <button class="modal-close" onclick="closeModal('readModal')">&times;</button>
             </div>
-            <div class="read-content" id="readContent"></div>
-            <div class="read-tags" id="readTags"></div>
-            <div class="read-meta" id="readMeta"></div>
+            <div id="readContent" class="read-content"></div>
+            <div id="readTags" class="tags"></div>
             <div class="form-actions">
-                <button type="button" class="btn-secondary" onclick="closeReadModal()">关闭</button>
-                <button type="button" class="btn-primary" onclick="editFromRead()">✏️ 编辑此条</button>
+                <button class="btn-secondary" onclick="closeModal('readModal')">关闭</button>
+                <button class="btn-primary" id="editFromReadBtn">✏️ 编辑</button>
             </div>
         </div>
     </div>
@@ -635,499 +529,294 @@
         <div class="modal">
             <div class="modal-header">
                 <h2 id="modalTitle">✏️ 编辑知识</h2>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <button class="modal-close" onclick="closeModal('editModal')">&times;</button>
             </div>
             <form id="editForm" onsubmit="saveKnowledge(event)">
                 <input type="hidden" id="editIndex">
-                
                 <div class="form-group">
-                    <label for="editCategory">📁 分类</label>
-                    <select id="editCategory" required>
-                        <option value="basics">基础概念</option>
-                        <option value="design">设计流程</option>
-                        <option value="manufacturing">制造工艺</option>
-                        <option value="packaging">封装测试</option>
-                        <option value="devices">常用器件</option>
-                        <option value="trends">行业趋势</option>
-                    </select>
+                    <label>📁 分类</label>
+                    <select id="editCategory" required></select>
                 </div>
-
                 <div class="form-group">
-                    <label for="editTitle">📝 标题</label>
-                    <input type="text" id="editTitle" required placeholder="输入知识标题">
+                    <label>📝 标题</label>
+                    <input type="text" id="editTitle" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="editContent">📄 内容</label>
-                    <textarea id="editContent" required placeholder="输入详细内容..."></textarea>
+                    <label>📄 内容</label>
+                    <textarea id="editContent" required></textarea>
                 </div>
-
                 <div class="form-group">
-                    <label for="editTags">🏷️ 标签（用逗号分隔）</label>
-                    <input type="text" id="editTags" placeholder="例如：基础，定义，核心概念">
+                    <label>🏷️ 标签（逗号分隔）</label>
+                    <input type="text" id="editTags">
                 </div>
-
                 <div class="form-actions">
-                    <button type="button" class="btn-danger" onclick="deleteKnowledge()" id="deleteBtn">🗑️ 删除</button>
-                    <button type="button" class="btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="button" class="btn-danger" id="deleteBtn" onclick="deleteKnowledge()">🗑️ 删除</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editModal')">取消</button>
                     <button type="submit" class="btn-primary">💾 保存</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- 提示信息 -->
+    <!-- 分类管理模态框 -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>📂 管理分类</h2>
+                <button class="modal-close" onclick="closeModal('categoryModal')">&times;</button>
+            </div>
+            <p style="margin-bottom: 15px; color: var(--text-secondary); font-size: 0.9rem;">
+                * 修改 ID 可能会导致现有知识丢失关联。建议只修改名称。
+            </p>
+            <table class="category-table">
+                <thead>
+                    <tr>
+                        <th>分类 ID</th>
+                        <th>分类名称</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="categoryTableBody"></tbody>
+            </table>
+            <button class="btn-secondary" style="width: 100%; margin-bottom: 20px;" onclick="addCategoryRow()">➕ 添加新分类</button>
+            <div class="form-actions">
+                <button class="btn-secondary" onclick="closeModal('categoryModal')">关闭</button>
+                <button class="btn-primary" onclick="saveCategories()">💾 保存所有更改</button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast" id="toast"></div>
 
     <script>
-        // 集成电路知识库数据
-        let knowledgeData = [
-            // 基础概念
-            {
-                category: 'basics',
-                title: '什么是集成电路 (IC)？',
-                content: '集成电路（Integrated Circuit，简称 IC）是一种微型电子器件，将晶体管、电阻、电容等电子元件集成在一块半导体材料（通常是硅）上。它是现代电子设备的核心组件，从手机到电脑，从汽车到家电，无处不在。',
-                tags: ['基础', '定义', '核心概念']
-            },
-            {
-                category: 'basics',
-                title: '摩尔定律',
-                content: '摩尔定律由英特尔创始人戈登·摩尔在 1965 年提出，指出集成电路上可容纳的晶体管数量大约每 18-24 个月翻一番，性能也随之提升。虽然近年来增速放缓，但这一定律指导了半导体行业数十年的发展。',
-                tags: ['定律', '发展趋势', '历史']
-            },
-            {
-                category: 'basics',
-                title: '半导体材料',
-                content: '半导体是导电性介于导体和绝缘体之间的材料。最常用的半导体材料是硅（Si），其他还包括锗（Ge）、砷化镓（GaAs）、氮化镓（GaN）等。硅因其 abundance、稳定性和成熟的加工工艺成为主流选择。',
-                tags: ['材料', '硅', '基础']
-            },
-            {
-                category: 'basics',
-                title: '晶体管的工作原理',
-                content: '晶体管是集成电路的基本构建单元，主要功能是放大电信号或作为电子开关。最常见的 MOSFET（金属氧化物半导体场效应晶体管）通过栅极电压控制源极和漏极之间的电流，实现开关或放大功能。',
-                tags: ['晶体管', 'MOSFET', '工作原理']
-            },
-
-            // 设计流程
-            {
-                category: 'design',
-                title: 'IC 设计流程概述',
-                content: '集成电路设计是一个复杂的多阶段过程，包括：需求分析→架构设计→逻辑设计→电路设计→物理设计→验证→流片。整个流程需要跨学科团队协作，通常耗时数月到数年。',
-                tags: ['设计流程', '概述', '方法论']
-            },
-            {
-                category: 'design',
-                title: '前端设计 (Front-end)',
-                content: '前端设计关注芯片的逻辑功能，包括架构定义、RTL 编码（Verilog/VHDL）、功能仿真、逻辑综合等。这一阶段的目标是确保设计的功能正确性，不涉及具体的物理实现。',
-                tags: ['前端', 'RTL', '逻辑设计']
-            },
-            {
-                category: 'design',
-                title: '后端设计 (Back-end)',
-                content: '后端设计将逻辑网表转换为物理版图，包括布局布线（Place & Route）、时序分析、功耗分析、物理验证（DRC/LVS）等。这一阶段决定了芯片的面积、性能和功耗。',
-                tags: ['后端', '布局布线', '物理设计']
-            },
-            {
-                category: 'design',
-                title: 'EDA 工具',
-                content: 'EDA（Electronic Design Automation）工具是 IC 设计的基础软件，包括 Synopsys、Cadence、Siemens EDA 等厂商的产品。常用工具有：Design Compiler（综合）、PrimeTime（时序分析）、Virtuoso（定制设计）等。',
-                tags: ['EDA', '工具', '软件']
-            },
-
-            // 制造工艺
-            {
-                category: 'manufacturing',
-                title: '晶圆制造流程',
-                content: '晶圆制造是在硅片上创建集成电路的过程，主要步骤包括：氧化→光刻→刻蚀→离子注入→薄膜沉积→化学机械抛光（CMP）。这些步骤需要重复数百次才能完成一颗芯片。',
-                tags: ['制造', '晶圆', '工艺流程']
-            },
-            {
-                category: 'manufacturing',
-                title: '光刻技术',
-                content: '光刻是芯片制造中最关键的工艺之一，通过紫外光将电路图案转移到硅片上。先进制程使用 EUV（极紫外）光刻，波长 13.5nm，可实现 7nm 及以下节点。ASML 是全球唯一能生产 EUV 光刻机的公司。',
-                tags: ['光刻', 'EUV', '关键技术']
-            },
-            {
-                category: 'manufacturing',
-                title: '制程节点',
-                content: '制程节点（如 7nm、5nm、3nm）代表芯片制造工艺的先进程度。数字越小，晶体管越小，芯片性能越强、功耗越低。但节点名称已不完全对应实际物理尺寸，更多是商业命名。',
-                tags: ['制程', '节点', '工艺']
-            },
-            {
-                category: 'manufacturing',
-                title: '主要晶圆代工厂',
-                content: '全球主要晶圆代工厂包括：台积电（TSMC，全球最大）、三星（Samsung）、英特尔（Intel）、中芯国际（SMIC）、联电（UMC）等。台积电在先进制程领域处于领先地位。',
-                tags: ['代工厂', '产业', '企业']
-            },
-
-            // 封装测试
-            {
-                category: 'packaging',
-                title: '芯片封装技术',
-                content: '封装是将制造完成的晶圆切割成单个芯片，并加上外壳保护的过程。封装类型包括：DIP、SOP、QFP、BGA、CSP 等。先进封装如 2.5D/3D 封装、Chiplet 技术正在成为提升性能的新方向。',
-                tags: ['封装', '技术', '类型']
-            },
-            {
-                category: 'packaging',
-                title: '芯片测试',
-                content: '芯片测试包括晶圆测试（CP）和成品测试（FT），目的是筛选出不良品。测试内容包括功能测试、参数测试、可靠性测试等。测试成本可占芯片总成本的 10-30%。',
-                tags: ['测试', '质量控制', '良率']
-            },
-            {
-                category: 'packaging',
-                title: 'Chiplet 技术',
-                content: 'Chiplet 是将大型 SoC 拆分为多个小芯片（小芯粒），通过先进封装集成在一起的技术。这种方式可以降低设计复杂度、提高良率、降低成本，是后摩尔时代的重要发展方向。',
-                tags: ['Chiplet', '先进封装', '趋势']
-            },
-
-            // 常用器件
-            {
-                category: 'devices',
-                title: '微处理器 (CPU)',
-                content: 'CPU 是计算机的大脑，负责执行指令和处理数据。主要架构包括 x86（Intel、AMD）和 ARM（移动设备主流）。RISC-V 作为开源架构正在快速发展。',
-                tags: ['CPU', '处理器', '架构']
-            },
-            {
-                category: 'devices',
-                title: '图形处理器 (GPU)',
-                content: 'GPU 最初用于图形渲染，现在广泛应用于 AI 训练、科学计算等领域。主要厂商包括 NVIDIA、AMD、Intel。GPU 的并行计算能力使其成为 AI 时代的核心硬件。',
-                tags: ['GPU', '图形', 'AI']
-            },
-            {
-                category: 'devices',
-                title: '存储器',
-                content: '存储器包括易失性存储器（DRAM、SRAM）和非易失性存储器（NAND Flash、NOR Flash）。DRAM 用于主内存，NAND Flash 用于 SSD 和手机存储。存储芯片占半导体市场约 1/3。',
-                tags: ['存储器', 'DRAM', 'Flash']
-            },
-            {
-                category: 'devices',
-                title: '模拟芯片',
-                content: '模拟芯片处理连续信号，包括电源管理芯片（PMIC）、信号链芯片（放大器、ADC/DAC）、射频芯片等。模拟芯片设计更依赖工程师经验，生命周期长。',
-                tags: ['模拟', '电源管理', '射频']
-            },
-
-            // 行业趋势
-            {
-                category: 'trends',
-                title: 'AI 芯片',
-                content: 'AI 芯片专为人工智能计算设计，包括 GPU、TPU（Google）、NPU 等。随着大模型的发展，AI 芯片需求爆发式增长，成为半导体行业最重要的增长引擎。',
-                tags: ['AI', '机器学习', '趋势']
-            },
-            {
-                category: 'trends',
-                title: '汽车半导体',
-                content: '电动汽车和自动驾驶推动汽车半导体需求增长。一辆现代汽车包含数千颗芯片，用于发动机控制、安全系统、信息娱乐等。车规级芯片要求高可靠性。',
-                tags: ['汽车', '电动化', '自动驾驶']
-            },
-            {
-                category: 'trends',
-                title: '国产替代',
-                content: '在中美科技竞争背景下，中国半导体产业加速发展。从设计、制造到设备、材料，全产业链都在推进国产化。这是一个长期但必然的趋势。',
-                tags: ['国产化', '自主可控', '产业']
-            },
-            {
-                category: 'trends',
-                title: '量子计算芯片',
-                content: '量子计算是下一代计算技术，使用量子比特（qubit）进行计算。虽然仍处于早期阶段，但 IBM、Google、中国科研机构等都在积极研发。量子芯片可能在未来颠覆传统计算。',
-                tags: ['量子计算', '前沿', '未来']
-            }
+        // 初始数据
+        let categories = [
+            { id: 'basics', name: '基础概念' },
+            { id: 'design', name: '设计流程' },
+            { id: 'manufacturing', name: '制造工艺' },
+            { id: 'packaging', name: '封装测试' },
+            { id: 'devices', name: '常用器件' },
+            { id: 'trends', name: '行业趋势' }
         ];
 
-        // 当前分类
+        let knowledgeData = [
+            { category: 'basics', title: '什么是集成电路 (IC)？', content: '集成电路是一种微型电子器件...', tags: ['基础', '定义'] },
+            { category: 'basics', title: '摩尔定律', content: '晶体管数量大约每18-24个月翻一番...', tags: ['定律', '历史'] },
+            { category: 'design', title: 'EDA 工具', content: 'EDA 是 IC 设计的基础软件...', tags: ['EDA', '工具'] },
+            { category: 'manufacturing', title: '光刻技术', content: '制造中最关键的工艺之一...', tags: ['光刻', 'EUV'] }
+        ];
+
         let currentCategory = 'all';
 
-        // 显示分类内容
-        function showCategory(category) {
-            currentCategory = category;
-            
-            // 更新导航按钮状态
-            document.querySelectorAll('nav button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
+        // 初始化
+        function init() {
+            renderNav();
+            renderContent();
+            updateCategoryDropdown();
+        }
 
+        // 渲染导航
+        function renderNav() {
+            const nav = document.getElementById('navLinks');
+            nav.innerHTML = `<li><button class="${currentCategory === 'all' ? 'active' : ''}" onclick="showCategory('all')">全部</button></li>`;
+            categories.forEach(cat => {
+                nav.innerHTML += `<li><button class="${currentCategory === cat.id ? 'active' : ''}" onclick="showCategory('${cat.id}')">${cat.name}</button></li>`;
+            });
+        }
+
+        // 渲染下拉框
+        function updateCategoryDropdown() {
+            const select = document.getElementById('editCategory');
+            select.innerHTML = categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+        }
+
+        // 切换分类
+        function showCategory(id) {
+            currentCategory = id;
+            renderNav();
             renderContent();
         }
 
-        // 获取分类名称
-        function getCategoryName(category) {
-            const names = {
-                'all': '全部知识',
-                'basics': '基础概念',
-                'design': '设计流程',
-                'manufacturing': '制造工艺',
-                'packaging': '封装测试',
-                'devices': '常用器件',
-                'trends': '行业趋势'
-            };
-            return names[category] || category;
-        }
-
-        // 过滤数据
-        function filterData() {
-            if (currentCategory === 'all') {
-                return knowledgeData;
-            }
-            return knowledgeData.filter(item => item.category === currentCategory);
-        }
-
-        // 渲染内容
+        // 渲染主内容
         function renderContent() {
-            const data = filterData();
             const main = document.getElementById('mainContent');
+            const filtered = currentCategory === 'all' ? knowledgeData : knowledgeData.filter(d => d.category === currentCategory);
             
-            let html = `<h2 class="category-title">${getCategoryName(currentCategory)}</h2>`;
+            let html = `<h2 class="category-title">${currentCategory === 'all' ? '全部知识' : categories.find(c => c.id === currentCategory).name}</h2>`;
             html += `<div class="knowledge-grid">`;
             
-            // 添加新卡片按钮（只在全部或对应分类时显示）
-            if (currentCategory === 'all' || data.length > 0) {
-                data.forEach((item, index) => {
-                    const realIndex = knowledgeData.indexOf(item);
-                    const cardId = `card-${realIndex}`;
-                    html += `
-                        <div class="knowledge-card" id="${cardId}">
-                            <div class="card-actions">
-                                <button class="card-action-btn read-btn" onclick="event.stopPropagation(); openReadModal(${realIndex})">
-                                    📖 阅读全文
-                                </button>
-                                <button class="card-action-btn edit-btn" onclick="event.stopPropagation(); openEditModal(${realIndex})">
-                                    ✏️ 编辑
-                                </button>
-                            </div>
-                            <h3>${item.title}</h3>
-                            <p>${item.content}</p>
-                            <div class="tags">
-                                ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                            </div>
+            filtered.forEach((item, index) => {
+                const realIndex = knowledgeData.indexOf(item);
+                html += `
+                    <div class="knowledge-card" onclick="openReadModal(${realIndex})">
+                        <div class="card-actions">
+                            <button class="card-action-btn" onclick="event.stopPropagation(); openEditModal(${realIndex})">✏️ 编辑</button>
                         </div>
-                    `;
-                });
-            }
-            
-            // 添加"添加新知识"卡片
+                        <h3>${item.title}</h3>
+                        <p>${item.content}</p>
+                        <div class="tags">${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+                    </div>`;
+            });
+
             html += `
                 <div class="add-card" onclick="openAddModal()">
                     <span>➕</span>
                     <strong>添加新知识</strong>
-                    <p>点击创建新的知识条目</p>
                 </div>
-            `;
+            </div>`;
             
-            // 存储当前渲染的索引映射
-            window.cardIndexMap = {};
-            data.forEach((item, i) => {
-                window.cardIndexMap[i] = knowledgeData.indexOf(item);
-            });
-            
-            html += `</div>`;
             main.innerHTML = html;
         }
 
-        // 搜索功能
-        function searchKnowledge() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            
-            if (!query) {
-                showCategory('all');
-                return;
-            }
+        // 模态框控制
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-            const filteredData = knowledgeData.filter(item => 
-                item.title.toLowerCase().includes(query) || 
-                item.content.toLowerCase().includes(query) ||
-                item.tags.some(tag => tag.toLowerCase().includes(query))
-            );
-
-            const main = document.getElementById('mainContent');
-            let html = `<h2 class="category-title">搜索结果：${query}（共${filteredData.length}条）</h2>`;
-            html += `<div class="knowledge-grid">`;
-            
-            filteredData.forEach((item, index) => {
-                const realIndex = knowledgeData.indexOf(item);
-                html += `
-                    <div class="knowledge-card" id="card-${realIndex}">
-                        <div class="card-actions">
-                            <button class="card-action-btn read-btn" onclick="event.stopPropagation(); openReadModal(${realIndex})">
-                                📖 阅读全文
-                            </button>
-                            <button class="card-action-btn edit-btn" onclick="event.stopPropagation(); openEditModal(${realIndex})">
-                                ✏️ 编辑
-                            </button>
-                        </div>
-                        <h3>${item.title}</h3>
-                        <p>${item.content}</p>
-                        <div class="tags">
-                            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += `</div>`;
-            main.innerHTML = html;
-
-            // 重置导航按钮状态
-            document.querySelectorAll('nav button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-        }
-
-        // 打开编辑模态框
-        function openEditModal(index) {
+        // 阅读全文
+        function openReadModal(index) {
             const item = knowledgeData[index];
+            document.getElementById('readTitle').textContent = item.title;
+            document.getElementById('readContent').textContent = item.content;
+            document.getElementById('readTags').innerHTML = item.tags.map(t => `<span class="tag">${t}</span>`).join('');
+            document.getElementById('editFromReadBtn').onclick = () => { closeModal('readModal'); openEditModal(index); };
+            document.getElementById('readModal').classList.add('active');
+        }
+
+        // 编辑/添加
+        function openEditModal(index) {
+            const isEdit = index >= 0;
+            const item = isEdit ? knowledgeData[index] : { category: currentCategory === 'all' ? categories[0].id : currentCategory, title: '', content: '', tags: [] };
+            
             document.getElementById('editIndex').value = index;
             document.getElementById('editCategory').value = item.category;
             document.getElementById('editTitle').value = item.title;
             document.getElementById('editContent').value = item.content;
             document.getElementById('editTags').value = item.tags.join(', ');
-            document.getElementById('modalTitle').textContent = '✏️ 编辑知识';
-            document.getElementById('deleteBtn').style.display = 'block';
+            document.getElementById('modalTitle').textContent = isEdit ? '✏️ 编辑知识' : '➕ 添加新知识';
+            document.getElementById('deleteBtn').style.display = isEdit ? 'block' : 'none';
             document.getElementById('editModal').classList.add('active');
         }
 
-        // 打开添加模态框
-        function openAddModal() {
-            document.getElementById('editForm').reset();
-            document.getElementById('editIndex').value = '-1';
-            document.getElementById('modalTitle').textContent = '➕ 添加新知识';
-            document.getElementById('deleteBtn').style.display = 'none';
-            document.getElementById('editModal').classList.add('active');
-        }
+        function openAddModal() { openEditModal(-1); }
 
-        // 关闭模态框
-        function closeModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
-
-        // 保存知识
-        function saveKnowledge(event) {
-            event.preventDefault();
-            
+        function saveKnowledge(e) {
+            e.preventDefault();
             const index = parseInt(document.getElementById('editIndex').value);
-            const category = document.getElementById('editCategory').value;
-            const title = document.getElementById('editTitle').value;
-            const content = document.getElementById('editContent').value;
-            const tags = document.getElementById('editTags').value.split(',').map(t => t.trim()).filter(t => t);
+            const data = {
+                category: document.getElementById('editCategory').value,
+                title: document.getElementById('editTitle').value,
+                content: document.getElementById('editContent').value,
+                tags: document.getElementById('editTags').value.split(',').map(t => t.trim()).filter(t => t)
+            };
 
-            const newItem = { category, title, content, tags };
+            if (index >= 0) knowledgeData[index] = data;
+            else knowledgeData.push(data);
 
-            if (index >= 0) {
-                // 编辑现有条目
-                knowledgeData[index] = newItem;
-                showToast('✅ 保存成功！', 'success');
-            } else {
-                // 添加新条目
-                knowledgeData.push(newItem);
-                showToast('✅ 添加成功！', 'success');
-            }
-
-            closeModal();
+            closeModal('editModal');
             renderContent();
+            showToast('保存成功');
         }
 
-        // 删除知识
         function deleteKnowledge() {
-            const index = parseInt(document.getElementById('editIndex').value);
-            if (index < 0) return;
-
-            if (confirm('确定要删除这条知识吗？')) {
-                knowledgeData.splice(index, 1);
-                showToast('🗑️ 已删除', 'success');
-                closeModal();
-                renderContent();
-            }
+            if (!confirm('确定删除吗？')) return;
+            knowledgeData.splice(document.getElementById('editIndex').value, 1);
+            closeModal('editModal');
+            renderContent();
+            showToast('已删除');
         }
 
-        // 导出数据
+        // 分类管理逻辑
+        function openCategoryModal() {
+            const body = document.getElementById('categoryTableBody');
+            body.innerHTML = '';
+            categories.forEach((cat, index) => {
+                body.innerHTML += `
+                    <tr>
+                        <td><input type="text" value="${cat.id}" class="cat-id-input"></td>
+                        <td><input type="text" value="${cat.name}" class="cat-name-input"></td>
+                        <td><button class="btn-danger" onclick="this.parentElement.parentElement.remove()" style="padding: 5px 10px;">删除</button></td>
+                    </tr>`;
+            });
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        function addCategoryRow() {
+            const body = document.getElementById('categoryTableBody');
+            body.innerHTML += `
+                <tr>
+                    <td><input type="text" placeholder="new_id" class="cat-id-input"></td>
+                    <td><input type="text" placeholder="新分类名称" class="cat-name-input"></td>
+                    <td><button class="btn-danger" onclick="this.parentElement.parentElement.remove()" style="padding: 5px 10px;">删除</button></td>
+                </tr>`;
+        }
+
+        function saveCategories() {
+            const newCategories = [];
+            const rows = document.querySelectorAll('#categoryTableBody tr');
+            rows.forEach(row => {
+                const id = row.querySelector('.cat-id-input').value.trim();
+                const name = row.querySelector('.cat-name-input').value.trim();
+                if (id && name) newCategories.push({ id, name });
+            });
+
+            if (newCategories.length === 0) return alert('请至少保留一个分类');
+            
+            categories = newCategories;
+            init();
+            closeModal('categoryModal');
+            showToast('分类已更新');
+        }
+
+        // 数据导出导入
         function exportData() {
-            const dataStr = JSON.stringify(knowledgeData, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
+            const data = { categories, knowledgeData };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `ic-knowledge-${new Date().toISOString().split('T')[0]}.json`;
+            a.download = 'ic-knowledge-data.json';
             a.click();
-            URL.revokeObjectURL(url);
-            showToast('📤 数据已导出', 'success');
         }
 
-        // 导入数据
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
+        function importData(e) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported)) {
-                        knowledgeData = imported;
-                        renderContent();
-                        showToast('📥 数据已导入', 'success');
-                    } else {
-                        showToast('❌ 文件格式不正确', 'error');
-                    }
-                } catch (err) {
-                    showToast('❌ 无法解析文件', 'error');
+            reader.onload = (event) => {
+                const data = JSON.parse(event.target.result);
+                if (data.categories && data.knowledgeData) {
+                    categories = data.categories;
+                    knowledgeData = data.knowledgeData;
+                    init();
+                    showToast('数据导入成功');
                 }
             };
-            reader.readAsText(file);
-            event.target.value = '';
+            reader.readAsText(e.target.files[0]);
         }
 
-        // 显示提示
-        function showToast(message, type = '') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show ' + type;
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // 打开阅读详情模态框
-        function openReadModal(index) {
-            const item = knowledgeData[index];
-            document.getElementById('readTitle').textContent = `📖 ${item.title}`;
-            document.getElementById('readContent').innerHTML = `<p>${item.content.replace(/\n/g, '<br>')}</p>`; // 换行符转换为 <br>
-            document.getElementById('readMeta').textContent = `分类：${getCategoryName(item.category)}`;
+        // 搜索
+        function searchKnowledge() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = knowledgeData.filter(d => d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q) || d.tags.some(t => t.toLowerCase().includes(q)));
             
-            const tagsHtml = item.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-            document.getElementById('readTags').innerHTML = tagsHtml;
-
-            // 存储当前正在查看的知识点的索引，方便从阅读模式切换到编辑模式
-            document.getElementById('editIndex').value = index; 
-            document.getElementById('readModal').classList.add('active');
+            const main = document.getElementById('mainContent');
+            main.innerHTML = `<h2 class="category-title">搜索结果: ${q}</h2><div class="knowledge-grid">` + 
+                filtered.map((item, i) => `
+                    <div class="knowledge-card" onclick="openReadModal(${knowledgeData.indexOf(item)})">
+                        <div class="card-actions">
+                            <button class="card-action-btn" onclick="event.stopPropagation(); openEditModal(${knowledgeData.indexOf(item)})">✏️ 编辑</button>
+                        </div>
+                        <h3>${item.title}</h3>
+                        <p>${item.content}</p>
+                        <div class="tags">${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+                    </div>`).join('') + `</div>`;
         }
 
-        // 关闭阅读详情模态框
-        function closeReadModal() {
-            document.getElementById('readModal').classList.remove('active');
-        }
-
-        // 从阅读模式切换到编辑模式
-        function editFromRead() {
-            closeReadModal();
-            const index = parseInt(document.getElementById('editIndex').value);
-            openEditModal(index);
-        }
-
-        // 支持回车搜索
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchKnowledge();
-            }
-        });
-
-        // 点击模态框外部关闭
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-
-        // 初始化显示全部内容
-        renderContent();
+        init();
     </script>
 </body>
 </html>
