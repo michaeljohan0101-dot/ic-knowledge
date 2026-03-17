@@ -65,7 +65,7 @@
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-        .modal { background: white; border-radius: 35px; padding: 45px; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; }
+        .modal { background: white; border-radius: 35px; padding: 45px; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; position: relative; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
         .modal-close { background: #f1f5f9; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; }
 
@@ -73,7 +73,6 @@
         .form-group label { display: block; margin-bottom: 0.6rem; font-weight: 700; color: var(--text-muted); font-size: 0.85rem; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 15px 22px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 1rem; background: #f8fafc; transition: 0.3s; }
         .form-group textarea { min-height: 300px; line-height: 1.8; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
 
         .btn-group { display: flex; justify-content: flex-end; gap: 12px; margin-top: 3rem; }
         .btn { padding: 14px 30px; border-radius: 100px; font-weight: 800; cursor: pointer; border: none; transition: 0.3s; }
@@ -85,7 +84,6 @@
         .read-content img { max-width: 100%; border-radius: var(--radius-md); margin: 2rem 0; box-shadow: var(--shadow-lg); }
 
         .toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 15px 35px; border-radius: 100px; font-weight: 700; z-index: 2000; display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { transform: translate(-50%, 40px); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -119,9 +117,8 @@
         <div class="modal" style="max-width: 500px;">
             <div class="modal-header"><h2>⚙️ 协作设置</h2><button class="modal-close" onclick="closeM('syncModal')">&times;</button></div>
             <div class="form-group"><label>你的社区昵称</label><input type="text" id="syncUser" placeholder="例如: Michael"></div>
-            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:20px;">* 已集成你的 Supabase 私人连接，无需再次填写 URL。</p>
             <div class="btn-group">
-                <button class="btn btn-primary" onclick="saveConfig()">保存设置</button>
+                <button class="btn btn-primary" onclick="saveConfig()">保存并连接</button>
             </div>
         </div>
     </div>
@@ -134,14 +131,14 @@
                 <input type="hidden" id="editIndex">
                 <div style="display:grid; grid-template-columns: 1fr 2fr; gap:25px;">
                     <div class="form-group"><label>分类</label><select id="editCat"></select></div>
-                    <div class="form-group"><label>标题</label><input type="text" id="editTitle" required placeholder="输入标题..."></div>
+                    <div class="form-group"><label>标题</label><input type="text" id="editTitle" required></div>
                 </div>
-                <div class="form-group"><label>内容 (支持直接粘贴图片 Ctrl+V)</label><textarea id="editContent" required onpaste="handlePaste(event)" placeholder="分享你的发现..."></textarea></div>
+                <div class="form-group"><label>内容 (Ctrl+V 粘贴图片)</label><textarea id="editContent" required onpaste="handlePaste(event)"></textarea></div>
                 <div id="imgPreview" style="display:flex; gap:10px; margin-bottom:1.5rem; flex-wrap:wrap;"></div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-danger" id="delBtn" onclick="del()">撤回发布</button>
+                    <button type="button" class="btn btn-danger" id="delBtn" onclick="del()">撤回</button>
                     <button type="button" class="btn btn-ghost" onclick="closeM('editModal')">取消</button>
-                    <button type="submit" class="btn btn-primary">立即发布到社区</button>
+                    <button type="submit" class="btn btn-primary">立即发布</button>
                 </div>
             </form>
         </div>
@@ -149,14 +146,15 @@
 
     <!-- 阅读模态框 -->
     <div class="modal-overlay" id="readModal">
-        <div class="modal"><button class="modal-close" onclick="closeM('readModal')" style="position:absolute; top:40px; right:40px;">&times;</button><h2 id="readTitle" style="font-size:2.5rem; margin-bottom:2rem;"></h2><div id="readBody" class="read-content"></div><div class="btn-group"><button class="btn btn-ghost" onclick="closeM('readModal')">完成阅读</button><button class="btn btn-primary" id="editBtnRead">✏️ 编辑此条</button></div></div>
+        <div class="modal"><button class="modal-close" onclick="closeM('readModal')" style="position:absolute; top:40px; right:40px;">&times;</button><h2 id="readTitle" style="font-size:2.5rem; margin-bottom:2rem;"></h2><div id="readBody" class="read-content"></div><div class="btn-group"><button class="btn btn-ghost" onclick="closeM('readModal')">关闭</button><button class="btn btn-primary" id="editBtnRead">✏️ 编辑</button></div></div>
     </div>
 
     <div class="toast" id="toast"></div>
 
+    <!-- 加载 SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
-        // 核心配置 (已集成用户提供的 Key)
         const SB_URL = "https://hwkvbbrdvlnzwpwovyyi.supabase.co";
         const SB_KEY = "sb_publishable_PR7jsN2qZiZUGOd8SXf3BA_zYJrVz_E";
         
@@ -164,30 +162,42 @@
         let knowledgeData = [];
         let currentCat = 'all';
         let tempImages = [];
-        let supabase = null;
+        let supabaseClient = null;
         let currentUser = localStorage.getItem('ic_nickname') || "探索者";
+
+        // 窗口加载完成后初始化
+        window.onload = function() {
+            init();
+        };
 
         function init() {
             document.getElementById('syncUser').value = currentUser;
             try {
-                supabase = window.supabase.createClient(SB_URL, SB_KEY);
-                document.getElementById('syncBadge').className = "sync-badge online";
-                document.getElementById('syncBadge').textContent = "● 社区协作模式";
-            } catch(e) { console.error("Cloud init fail"); }
+                if (typeof supabase !== 'undefined') {
+                    supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+                    document.getElementById('syncBadge').className = "sync-badge online";
+                    document.getElementById('syncBadge').textContent = "● 社区协作模式";
+                    fetchCloud();
+                } else {
+                    console.error("Supabase SDK not loaded");
+                }
+            } catch(e) { console.error("Cloud init fail", e); }
             
             updateCatSelect();
-            fetchCloud();
+            renderNav();
+            renderGrid();
         }
 
         async function fetchCloud() {
-            if(!supabase) return;
+            if(!supabaseClient) return;
             toast("🔄 正在同步社区最新知识...");
-            const { data, error } = await supabase.from('knowledge').select('*').order('updated_at', { ascending: false });
-            if(!error && data) {
-                knowledgeData = data;
-                renderNav();
-                renderGrid();
-            } else { toast("❌ 同步失败，请检查数据库设置"); }
+            try {
+                const { data, error } = await supabaseClient.from('knowledge').select('*').order('updated_at', { ascending: false });
+                if(!error && data) {
+                    knowledgeData = data;
+                    renderGrid();
+                }
+            } catch(e) { toast("❌ 同步失败"); }
         }
 
         function renderNav() {
@@ -208,10 +218,9 @@
                 html += `
                 <div class="knowledge-card" onclick="openRead(${idx})">
                     <h3>${item.title}</h3>
-                    <p>${item.content.replace(/\[\[图片\d+\]\]/g, '[图]')}</p>
+                    <p>${(item.content || "").replace(/\[\[图片\d+\]\]/g, '[图]')}</p>
                     <div class="card-footer">
                         <span class="author-tag">👤 ${item.author || '匿名'}</span>
-                        <span style="font-size:0.7rem; color:#94a3b8;">${new Date(item.updated_at).toLocaleDateString()}</span>
                     </div>
                 </div>`;
             });
@@ -255,10 +264,11 @@
             } }
         }
 
-        function renderTempImages() { document.getElementById('imgPreview').innerHTML = tempImages.map((img, i) => `<img src="${img}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.1);">`).join(''); }
+        function renderTempImages() { document.getElementById('imgPreview').innerHTML = tempImages.map((img, i) => `<img src="${img}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">`).join(''); }
 
         async function save(e) {
             e.preventDefault();
+            if(!supabaseClient) return toast("❌ 未连接云端");
             const idx = parseInt(document.getElementById('editIndex').value);
             const data = {
                 id: idx >= 0 ? knowledgeData[idx].id : Math.random().toString(36).substr(2, 9),
@@ -270,20 +280,16 @@
                 updated_at: new Date()
             };
             
-            toast("🚀 正在发布到云端...");
-            const { error } = await supabase.from('knowledge').upsert(data);
-            if(!error) {
-                closeM('editModal');
-                fetchCloud();
-                toast("✨ 发布成功！全社区已同步");
-            } else { toast("❌ 发布失败，请检查 SQL 表是否创建"); }
+            toast("🚀 正在发布...");
+            const { error } = await supabaseClient.from('knowledge').upsert(data);
+            if(!error) { closeM('editModal'); fetchCloud(); toast("✨ 发布成功"); } else { toast("❌ 发布失败"); }
         }
 
         async function del() {
-            if(!confirm('确定撤回这条发布吗？')) return;
+            if(!confirm('确定撤回？')) return;
             const idx = document.getElementById('editIndex').value;
-            const { error } = await supabase.from('knowledge').delete().eq('id', knowledgeData[idx].id);
-            if(!error) { closeM('editModal'); fetchCloud(); toast("🗑️ 已从社区撤回"); }
+            const { error } = await supabaseClient.from('knowledge').delete().eq('id', knowledgeData[idx].id);
+            if(!error) { closeM('editModal'); fetchCloud(); toast("🗑️ 已撤回"); }
         }
 
         function saveConfig() {
@@ -298,13 +304,7 @@
         function closeM(id) { document.getElementById(id).classList.remove('active'); }
         function openSyncModal() { document.getElementById('syncModal').classList.add('active'); }
         function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3000); }
-        
-        function exportData() {
-            const blob = new Blob([JSON.stringify(knowledgeData, null, 2)], {type: 'application/json'});
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `ic_community_backup.json`; a.click();
-        }
-
-        init();
+        function exportData() { const blob = new Blob([JSON.stringify(knowledgeData, null, 2)], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `backup.json`; a.click(); }
     </script>
 </body>
 </html>
