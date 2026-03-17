@@ -79,6 +79,15 @@
         .knowledge-card h3 { margin-bottom: 10px; color: var(--primary-color); }
         .knowledge-card p { color: var(--text-secondary); font-size: 0.95rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
 
+        /* 添加卡片样式 */
+        .add-card {
+            border: 3px dashed var(--border-color); border-radius: 15px; padding: 40px;
+            text-align: center; cursor: pointer; color: var(--text-secondary);
+            transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .add-card:hover { border-color: var(--primary-color); color: var(--primary-color); background: #f0f9ff; }
+        .add-card span { font-size: 3rem; margin-bottom: 10px; }
+
         /* 模态框 */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -199,7 +208,7 @@
         let categories = [{id:'basics', name:'基础概念'}, {id:'design', name:'设计流程'}, {id:'manufacturing', name:'制造工艺'}];
         let knowledgeData = [];
         let currentCat = 'all';
-        let tempImages = []; // 用于编辑时临时存储图片 Base64
+        let tempImages = [];
 
         function init() {
             renderNav();
@@ -236,6 +245,8 @@
                         <p>${item.content.replace(/\[\[图片\d+\]\]/g, '[图片]')}</p>
                     </div>`;
             });
+            // 补全添加方块
+            html += `<div class="add-card" onclick="openEditModal(-1)"><span>➕</span><strong>添加新知识</strong></div>`;
             html += `</div>`;
             grid.innerHTML = html;
         }
@@ -243,8 +254,6 @@
         function openRead(idx) {
             const item = knowledgeData[idx];
             document.getElementById('readTitle').textContent = item.title;
-            
-            // 核心：替换内容中的 [[图片N]] 为 <img> 标签
             let contentHtml = item.content;
             if (item.images && item.images.length > 0) {
                 item.images.forEach((imgBase64, i) => {
@@ -261,31 +270,25 @@
         function openEditModal(idx) {
             const isEdit = idx >= 0;
             const item = isEdit ? knowledgeData[idx] : { category: categories[0].id, title: '', content: '', tags: [], images: [] };
-            
             document.getElementById('editIndex').value = idx;
             document.getElementById('editCat').value = item.category;
             document.getElementById('editTitle').value = item.title;
             document.getElementById('editContent').value = item.content;
             document.getElementById('editTags').value = item.tags.join(', ');
             tempImages = item.images ? [...item.images] : [];
-            
             renderEditImages();
             document.getElementById('modalTitle').textContent = isEdit ? '✏️ 编辑知识' : '➕ 添加新知识';
             document.getElementById('delBtn').style.display = isEdit ? 'block' : 'none';
             document.getElementById('editModal').classList.add('active');
         }
 
-        // 处理粘贴图片
         function handlePaste(e) {
             const items = (e.clipboardData || e.originalEvent.clipboardData).items;
             for (let item of items) {
                 if (item.type.indexOf('image') !== -1) {
                     const blob = item.getAsFile();
                     const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const base64 = event.target.result;
-                        addImageToEditor(base64);
-                    };
+                    reader.onload = (event) => addImageToEditor(event.target.result);
                     reader.readAsDataURL(blob);
                 }
             }
@@ -304,9 +307,7 @@
             const placeholder = `[[图片${tempImages.length}]]`;
             const textarea = document.getElementById('editContent');
             const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const text = textarea.value;
-            textarea.value = text.substring(0, start) + "\n" + placeholder + "\n" + text.substring(end);
+            textarea.value = textarea.value.substring(0, start) + "\n" + placeholder + "\n" + textarea.value.substring(textarea.selectionEnd);
             renderEditImages();
         }
 
@@ -314,24 +315,16 @@
             const list = document.getElementById('editImagesList');
             list.innerHTML = tempImages.map((img, i) => `
                 <div class="img-thumb">
-                    <img src="${img}">
-                    <button type="button" class="del-btn" onclick="removeImg(${i})">&times;</button>
+                    <img src="${img}"><button type="button" class="del-btn" onclick="removeImg(${i})">&times;</button>
                     <button type="button" class="insert-btn" onclick="insertPlaceholder(${i+1})">插到光标</button>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
-        function removeImg(idx) {
-            tempImages.splice(idx, 1);
-            renderEditImages();
-        }
-
+        function removeImg(idx) { tempImages.splice(idx, 1); renderEditImages(); }
         function insertPlaceholder(num) {
             const textarea = document.getElementById('editContent');
             const start = textarea.selectionStart;
-            const text = textarea.value;
-            const placeholder = `[[图片${num}]]`;
-            textarea.value = text.substring(0, start) + placeholder + text.substring(start);
+            textarea.value = textarea.value.substring(0, start) + `[[图片${num}]]` + textarea.value.substring(textarea.selectionEnd);
             textarea.focus();
         }
 
@@ -339,49 +332,29 @@
             e.preventDefault();
             const idx = parseInt(document.getElementById('editIndex').value);
             const data = {
-                category: document.getElementById('editCat').value,
-                title: document.getElementById('editTitle').value,
+                category: document.getElementById('editCat').value, title: document.getElementById('editTitle').value,
                 content: document.getElementById('editContent').value,
                 tags: document.getElementById('editTags').value.split(',').map(t => t.trim()).filter(t => t),
                 images: [...tempImages]
             };
-            if (idx >= 0) knowledgeData[idx] = data;
-            else knowledgeData.push(data);
-            closeM('editModal');
-            renderGrid();
-            toast('✅ 已保存');
+            if (idx >= 0) knowledgeData[idx] = data; else knowledgeData.push(data);
+            closeM('editModal'); renderGrid(); toast('✅ 已保存');
         }
 
         function del() {
             if (confirm('确认删除？')) {
                 knowledgeData.splice(document.getElementById('editIndex').value, 1);
-                closeM('editModal');
-                renderGrid();
-                toast('🗑️ 已删除');
+                closeM('editModal'); renderGrid(); toast('🗑️ 已删除');
             }
         }
 
-        // 分类管理逻辑
         function openCatModal() {
             const list = document.getElementById('catList');
-            list.innerHTML = categories.map((c, i) => `
-                <div style="display:flex; gap:10px; margin-bottom:10px;">
-                    <input type="text" value="${c.id}" class="cat-id-in" style="width:80px;">
-                    <input type="text" value="${c.name}" class="cat-name-in" style="flex:1;">
-                    <button onclick="this.parentElement.remove()" style="color:red; border:none; background:none; cursor:pointer;">&times;</button>
-                </div>
-            `).join('');
+            list.innerHTML = categories.map((c, i) => `<div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" value="${c.id}" class="cat-id-in" style="width:80px;"><input type="text" value="${c.name}" class="cat-name-in" style="flex:1;"><button onclick="this.parentElement.remove()" style="color:red; border:none; background:none; cursor:pointer;">&times;</button></div>`).join('');
             document.getElementById('catModal').classList.add('active');
         }
 
-        function addCatRow() {
-            document.getElementById('catList').innerHTML += `
-                <div style="display:flex; gap:10px; margin-bottom:10px;">
-                    <input type="text" placeholder="id" class="cat-id-in" style="width:80px;">
-                    <input type="text" placeholder="名称" class="cat-name-in" style="flex:1;">
-                    <button onclick="this.parentElement.remove()" style="color:red; border:none; background:none; cursor:pointer;">&times;</button>
-                </div>`;
-        }
+        function addCatRow() { document.getElementById('catList').innerHTML += `<div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" placeholder="id" class="cat-id-in" style="width:80px;"><input type="text" placeholder="名称" class="cat-name-in" style="flex:1;"><button onclick="this.parentElement.remove()" style="color:red; border:none; background:none; cursor:pointer;">&times;</button></div>`; }
 
         function saveCats() {
             const newCats = [];
@@ -390,10 +363,7 @@
                 const name = row.querySelector('.cat-name-in').value.trim();
                 if (id && name) newCats.push({ id, name });
             });
-            categories = newCats;
-            init();
-            closeM('catModal');
-            toast('📂 分类已更新');
+            categories = newCats; init(); closeM('catModal'); toast('📂 分类已更新');
         }
 
         function closeM(id) { document.getElementById(id).classList.remove('active'); }
@@ -403,15 +373,12 @@
             const filtered = knowledgeData.filter(d => d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q));
             const grid = document.getElementById('mainContent');
             grid.innerHTML = `<h2 class="category-title">🔍 搜索: ${q}</h2><div class="knowledge-grid">` + 
-                filtered.map(item => `<div class="knowledge-card" onclick="openRead(${knowledgeData.indexOf(item)})"><h3>${item.title}</h3><p>${item.content.replace(/\[\[图片\d+\]\]/g, '[图片]')}</p></div>`).join('') + `</div>`;
+                filtered.map(item => `<div class="knowledge-card" onclick="openRead(${knowledgeData.indexOf(item)})"><h3>${item.title}</h3><p>${item.content.replace(/\[\[图片\d+\]\]/g, '[图片]')}</p></div>`).join('') + `<div class="add-card" onclick="openEditModal(-1)"><span>➕</span><strong>添加新知识</strong></div></div>`;
         }
 
         function exportData() {
             const blob = new Blob([JSON.stringify({ categories, knowledgeData }, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `ic_data_${new Date().getTime()}.json`;
-            a.click();
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `ic_data_${new Date().getTime()}.json`; a.click();
         }
 
         function importData(e) {
@@ -419,8 +386,7 @@
             reader.onload = (ev) => {
                 const data = JSON.parse(ev.target.result);
                 categories = data.categories; knowledgeData = data.knowledgeData;
-                init();
-                toast('📥 数据已导入');
+                init(); toast('📥 数据已导入');
             };
             reader.readAsText(e.target.files[0]);
         }
