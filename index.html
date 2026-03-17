@@ -211,7 +211,7 @@
             top: 10px;
             right: 10px;
             display: flex;
-            gap: 8px;
+            gap: 5px;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -221,38 +221,43 @@
         }
 
         .card-action-btn {
-            background: white;
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 4px;
+            color: var(--text-primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .card-action-btn:hover {
             background: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
+            transform: scale(1.05);
         }
 
         .knowledge-card h3 {
             color: var(--primary-color);
             margin-bottom: 12px;
             font-size: 1.3rem;
+            padding-right: 60px; /* 为按钮留出空间 */
         }
 
         .knowledge-card p {
             color: var(--text-secondary);
-            line-height: 1.8;
+            line-height: 1.6;
             margin-bottom: 15px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
+            font-size: 0.95rem;
         }
 
         .knowledge-card .tags {
@@ -264,9 +269,9 @@
         .tag {
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
         }
 
         /* 模态框通用样式 */
@@ -277,11 +282,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(5px);
         }
 
         .modal-overlay.active {
@@ -290,69 +295,78 @@
 
         .modal {
             background: white;
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 700px;
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 750px;
             width: 90%;
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: modalIn 0.3s ease-out;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 2px solid var(--border-color);
         }
 
         .modal-header h2 {
             color: var(--primary-color);
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
 
         .modal-close {
-            background: none;
+            background: #f1f5f9;
             border: none;
-            font-size: 1.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+            font-size: 1.2rem;
             color: var(--text-secondary);
-            transition: color 0.3s;
+            transition: all 0.2s;
         }
 
         .modal-close:hover {
-            color: var(--danger-color);
+            background: var(--danger-color);
+            color: white;
+            transform: rotate(90deg);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--text-primary);
+            font-size: 1rem;
         }
 
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px;
             border: 2px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
             font-family: inherit;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
         .form-group input:focus,
@@ -360,73 +374,92 @@
         .form-group select:focus {
             outline: none;
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
         .form-group textarea {
-            min-height: 200px;
+            min-height: 220px;
             resize: vertical;
+            line-height: 1.6;
         }
 
         .form-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: flex-end;
-            margin-top: 25px;
+            margin-top: 30px;
             flex-wrap: wrap;
         }
 
         .form-actions button {
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 12px 28px;
+            border-radius: 10px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             border: none;
         }
 
         .btn-primary { background: var(--primary-color); color: white; }
-        .btn-primary:hover { background: var(--secondary-color); }
-        .btn-secondary { background: var(--border-color); color: var(--text-primary); }
-        .btn-secondary:hover { background: #d1d5db; }
+        .btn-primary:hover { background: var(--secondary-color); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+        .btn-secondary { background: #f1f5f9; color: var(--text-primary); }
+        .btn-secondary:hover { background: #e2e8f0; }
         .btn-danger { background: var(--danger-color); color: white; }
-        .btn-danger:hover { background: #dc2626; }
+        .btn-danger:hover { background: #dc2626; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
 
-        /* 阅读模态框特有样式 */
+        /* 阅读模态框内容 */
         .read-content {
-            background: var(--bg-color);
-            padding: 25px;
-            border-radius: 12px;
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
-            line-height: 1.8;
-            font-size: 1.1rem;
+            line-height: 2;
+            font-size: 1.15rem;
             white-space: pre-wrap;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
         }
 
         /* 分类管理表格 */
         .category-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0 10px;
             margin-bottom: 20px;
         }
 
-        .category-table th, .category-table td {
-            padding: 12px;
+        .category-table th {
             text-align: left;
+            padding: 10px 15px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .category-table td {
+            padding: 15px;
+            background: #f8fafc;
+            border-top: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
         }
 
+        .category-table td:first-child { border-left: 1px solid var(--border-color); border-radius: 10px 0 0 10px; }
+        .category-table td:last-child { border-right: 1px solid var(--border-color); border-radius: 0 10px 10px 0; }
+
         .category-table input {
-            padding: 6px 10px;
+            padding: 10px;
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: 6px;
             width: 100%;
+            font-size: 0.95rem;
         }
 
-        /* 添加新卡片按钮 */
+        /* 添加卡片按钮 */
         .add-card {
             background: var(--card-bg);
             border: 3px dashed var(--border-color);
-            border-radius: 12px;
+            border-radius: 15px;
             padding: 40px;
             text-align: center;
             cursor: pointer;
@@ -436,38 +469,41 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            min-height: 200px;
         }
 
         .add-card:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
-            transform: translateY(-5px);
+            background: rgba(37, 99, 235, 0.02);
+            transform: scale(1.02);
         }
 
-        .add-card span { font-size: 3rem; margin-bottom: 10px; }
+        .add-card span { font-size: 3.5rem; margin-bottom: 15px; }
 
         /* 页脚 */
         footer {
             background: var(--text-primary);
             color: white;
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 60px;
+            padding: 3rem 0;
+            margin-top: 80px;
         }
 
         /* 提示信息 */
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 40px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--success-color);
+            transform: translateX(-50%) translateY(120px);
+            background: #0f172a;
             color: white;
-            padding: 12px 25px;
+            padding: 15px 35px;
             border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             z-index: 2000;
-            transition: transform 0.3s;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-weight: 500;
         }
 
         .toast.show { transform: translateX(-50%) translateY(0); }
@@ -495,20 +531,17 @@
     </div>
 
     <nav>
-        <ul id="navLinks">
-            <!-- 动态加载分类按钮 -->
-        </ul>
+        <ul id="navLinks"></ul>
     </nav>
 
-    <main id="mainContent">
-        <!-- 内容动态加载 -->
-    </main>
+    <main id="mainContent"></main>
 
     <footer>
         <p>© 2026 集成电路知识库 | IC Knowledge Base</p>
+        <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.6;">让知识流动，让技术更亲近</p>
     </footer>
 
-    <!-- 阅读模态框 -->
+    <!-- 阅读全文模态框 -->
     <div class="modal-overlay" id="readModal">
         <div class="modal">
             <div class="modal-header">
@@ -519,12 +552,12 @@
             <div id="readTags" class="tags"></div>
             <div class="form-actions">
                 <button class="btn-secondary" onclick="closeModal('readModal')">关闭</button>
-                <button class="btn-primary" id="editFromReadBtn">✏️ 编辑</button>
+                <button class="btn-primary" id="editFromReadBtn">✏️ 编辑此条</button>
             </div>
         </div>
     </div>
 
-    <!-- 编辑模态框 -->
+    <!-- 编辑/添加模态框 -->
     <div class="modal-overlay" id="editModal">
         <div class="modal">
             <div class="modal-header">
@@ -534,25 +567,25 @@
             <form id="editForm" onsubmit="saveKnowledge(event)">
                 <input type="hidden" id="editIndex">
                 <div class="form-group">
-                    <label>📁 分类</label>
+                    <label>📁 选择分类</label>
                     <select id="editCategory" required></select>
                 </div>
                 <div class="form-group">
                     <label>📝 标题</label>
-                    <input type="text" id="editTitle" required>
+                    <input type="text" id="editTitle" required placeholder="给知识起个响亮的名字">
                 </div>
                 <div class="form-group">
-                    <label>📄 内容</label>
-                    <textarea id="editContent" required></textarea>
+                    <label>📄 详细内容</label>
+                    <textarea id="editContent" required placeholder="在这里输入详细的集成电路知识点..."></textarea>
                 </div>
                 <div class="form-group">
-                    <label>🏷️ 标签（逗号分隔）</label>
-                    <input type="text" id="editTags">
+                    <label>🏷️ 标签（多个用逗号分隔）</label>
+                    <input type="text" id="editTags" placeholder="例如：基础, 摩尔定律, 7nm">
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-danger" id="deleteBtn" onclick="deleteKnowledge()">🗑️ 删除</button>
                     <button type="button" class="btn-secondary" onclick="closeModal('editModal')">取消</button>
-                    <button type="submit" class="btn-primary">💾 保存</button>
+                    <button type="submit" class="btn-primary">💾 保存更改</button>
                 </div>
             </form>
         </div>
@@ -562,25 +595,25 @@
     <div class="modal-overlay" id="categoryModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>📂 管理分类</h2>
+                <h2>📂 分类管理系统</h2>
                 <button class="modal-close" onclick="closeModal('categoryModal')">&times;</button>
             </div>
-            <p style="margin-bottom: 15px; color: var(--text-secondary); font-size: 0.9rem;">
-                * 修改 ID 可能会导致现有知识丢失关联。建议只修改名称。
-            </p>
+            <div style="background: #fff9db; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #fab005; font-size: 0.85rem;">
+                💡 <b>小提示：</b>修改“分类 ID”后，原本属于该 ID 的知识将需要重新归类。建议只修改“分类名称”。
+            </div>
             <table class="category-table">
                 <thead>
                     <tr>
-                        <th>分类 ID</th>
-                        <th>分类名称</th>
-                        <th>操作</th>
+                        <th width="35%">分类 ID (唯一标识)</th>
+                        <th width="45%">分类显示名称</th>
+                        <th width="20%">操作</th>
                     </tr>
                 </thead>
                 <tbody id="categoryTableBody"></tbody>
             </table>
-            <button class="btn-secondary" style="width: 100%; margin-bottom: 20px;" onclick="addCategoryRow()">➕ 添加新分类</button>
+            <button class="btn-secondary" style="width: 100%; margin-bottom: 20px; border: 2px dashed #cbd5e1;" onclick="addCategoryRow()">➕ 新增分类项</button>
             <div class="form-actions">
-                <button class="btn-secondary" onclick="closeModal('categoryModal')">关闭</button>
+                <button class="btn-secondary" onclick="closeModal('categoryModal')">取消</button>
                 <button class="btn-primary" onclick="saveCategories()">💾 保存所有更改</button>
             </div>
         </div>
@@ -589,7 +622,7 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // 初始数据
+        // 初始化存储
         let categories = [
             { id: 'basics', name: '基础概念' },
             { id: 'design', name: '设计流程' },
@@ -600,44 +633,44 @@
         ];
 
         let knowledgeData = [
-            { category: 'basics', title: '什么是集成电路 (IC)？', content: '集成电路是一种微型电子器件...', tags: ['基础', '定义'] },
-            { category: 'basics', title: '摩尔定律', content: '晶体管数量大约每18-24个月翻一番...', tags: ['定律', '历史'] },
-            { category: 'design', title: 'EDA 工具', content: 'EDA 是 IC 设计的基础软件...', tags: ['EDA', '工具'] },
-            { category: 'manufacturing', title: '光刻技术', content: '制造中最关键的工艺之一...', tags: ['光刻', 'EUV'] }
+            { category: 'basics', title: '什么是集成电路 (IC)？', content: '集成电路是一种微型电子器件，由晶体管、电阻、电容等电子元件集成在半导体材料上。', tags: ['基础', '定义'] },
+            { category: 'basics', title: '摩尔定律', content: '戈登·摩尔提出，集成电路上可容纳的晶体管数量大约每18-24个月翻一番。', tags: ['摩尔定律', '历史'] },
+            { category: 'manufacturing', title: '光刻机 (ASML)', content: 'ASML 是全球领先的芯片光刻机制造商，EUV 技术是实现先进制程的关键。', tags: ['光刻机', 'ASML'] }
         ];
 
         let currentCategory = 'all';
 
-        // 初始化
+        // 初始化函数
         function init() {
             renderNav();
             renderContent();
             updateCategoryDropdown();
         }
 
-        // 渲染导航
+        // 导航渲染
         function renderNav() {
             const nav = document.getElementById('navLinks');
-            nav.innerHTML = `<li><button class="${currentCategory === 'all' ? 'active' : ''}" onclick="showCategory('all')">全部</button></li>`;
+            let html = `<li><button class="${currentCategory === 'all' ? 'active' : ''}" onclick="showCategory('all')">全部</button></li>`;
             categories.forEach(cat => {
-                nav.innerHTML += `<li><button class="${currentCategory === cat.id ? 'active' : ''}" onclick="showCategory('${cat.id}')">${cat.name}</button></li>`;
+                html += `<li><button class="${currentCategory === cat.id ? 'active' : ''}" onclick="showCategory('${cat.id}')">${cat.name}</button></li>`;
             });
+            nav.innerHTML = html;
         }
 
-        // 渲染下拉框
+        // 更新下拉列表
         function updateCategoryDropdown() {
             const select = document.getElementById('editCategory');
             select.innerHTML = categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
         }
 
-        // 切换分类
+        // 分类切换
         function showCategory(id) {
             currentCategory = id;
             renderNav();
             renderContent();
         }
 
-        // 渲染主内容
+        // 主内容渲染
         function renderContent() {
             const main = document.getElementById('mainContent');
             const filtered = currentCategory === 'all' ? knowledgeData : knowledgeData.filter(d => d.category === currentCategory);
@@ -645,11 +678,12 @@
             let html = `<h2 class="category-title">${currentCategory === 'all' ? '全部知识' : categories.find(c => c.id === currentCategory).name}</h2>`;
             html += `<div class="knowledge-grid">`;
             
-            filtered.forEach((item, index) => {
+            filtered.forEach((item) => {
                 const realIndex = knowledgeData.indexOf(item);
                 html += `
                     <div class="knowledge-card" onclick="openReadModal(${realIndex})">
                         <div class="card-actions">
+                            <button class="card-action-btn" onclick="event.stopPropagation(); openReadModal(${realIndex})">📖 阅读全文</button>
                             <button class="card-action-btn" onclick="event.stopPropagation(); openEditModal(${realIndex})">✏️ 编辑</button>
                         </div>
                         <h3>${item.title}</h3>
@@ -662,16 +696,16 @@
                 <div class="add-card" onclick="openAddModal()">
                     <span>➕</span>
                     <strong>添加新知识</strong>
+                    <p>丰富你的知识库</p>
                 </div>
             </div>`;
             
             main.innerHTML = html;
         }
 
-        // 模态框控制
+        // 模态框逻辑
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // 阅读全文
         function openReadModal(index) {
             const item = knowledgeData[index];
             document.getElementById('readTitle').textContent = item.title;
@@ -681,7 +715,6 @@
             document.getElementById('readModal').classList.add('active');
         }
 
-        // 编辑/添加
         function openEditModal(index) {
             const isEdit = index >= 0;
             const item = isEdit ? knowledgeData[index] : { category: currentCategory === 'all' ? categories[0].id : currentCategory, title: '', content: '', tags: [] };
@@ -713,27 +746,27 @@
 
             closeModal('editModal');
             renderContent();
-            showToast('保存成功');
+            showToast('✅ 成功保存！');
         }
 
         function deleteKnowledge() {
-            if (!confirm('确定删除吗？')) return;
+            if (!confirm('确定要删除这条珍贵的知识吗？')) return;
             knowledgeData.splice(document.getElementById('editIndex').value, 1);
             closeModal('editModal');
             renderContent();
-            showToast('已删除');
+            showToast('🗑️ 已安全删除');
         }
 
         // 分类管理逻辑
         function openCategoryModal() {
             const body = document.getElementById('categoryTableBody');
             body.innerHTML = '';
-            categories.forEach((cat, index) => {
+            categories.forEach((cat) => {
                 body.innerHTML += `
                     <tr>
                         <td><input type="text" value="${cat.id}" class="cat-id-input"></td>
                         <td><input type="text" value="${cat.name}" class="cat-name-input"></td>
-                        <td><button class="btn-danger" onclick="this.parentElement.parentElement.remove()" style="padding: 5px 10px;">删除</button></td>
+                        <td><button class="btn-danger" onclick="this.parentElement.parentElement.remove()" style="padding: 6px 12px; font-size: 0.8rem;">移除</button></td>
                     </tr>`;
             });
             document.getElementById('categoryModal').classList.add('active');
@@ -743,37 +776,54 @@
             const body = document.getElementById('categoryTableBody');
             body.innerHTML += `
                 <tr>
-                    <td><input type="text" placeholder="new_id" class="cat-id-input"></td>
-                    <td><input type="text" placeholder="新分类名称" class="cat-name-input"></td>
-                    <td><button class="btn-danger" onclick="this.parentElement.parentElement.remove()" style="padding: 5px 10px;">删除</button></td>
+                    <td><input type="text" placeholder="category_id" class="cat-id-input"></td>
+                    <td><input type="text" placeholder="显示的名称" class="cat-name-input"></td>
+                    <td><button class="btn-danger" onclick="this.parentElement.parentElement.remove()" style="padding: 6px 12px; font-size: 0.8rem;">移除</button></td>
                 </tr>`;
         }
 
         function saveCategories() {
-            const newCategories = [];
-            const rows = document.querySelectorAll('#categoryTableBody tr');
-            rows.forEach(row => {
+            const newCats = [];
+            document.querySelectorAll('#categoryTableBody tr').forEach(row => {
                 const id = row.querySelector('.cat-id-input').value.trim();
                 const name = row.querySelector('.cat-name-input').value.trim();
-                if (id && name) newCategories.push({ id, name });
+                if (id && name) newCats.push({ id, name });
             });
-
-            if (newCategories.length === 0) return alert('请至少保留一个分类');
-            
-            categories = newCategories;
+            if (newCats.length === 0) return alert('请至少保留一个分类！');
+            categories = newCats;
             init();
             closeModal('categoryModal');
-            showToast('分类已更新');
+            showToast('📂 分类列表已更新');
         }
 
-        // 数据导出导入
+        // 搜索功能
+        function searchKnowledge() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = knowledgeData.filter(d => 
+                d.title.toLowerCase().includes(q) || 
+                d.content.toLowerCase().includes(q) || 
+                d.tags.some(t => t.toLowerCase().includes(q))
+            );
+            const main = document.getElementById('mainContent');
+            main.innerHTML = `<h2 class="category-title">🔍 搜索结果: ${q}</h2><div class="knowledge-grid">` + 
+                filtered.map(item => `
+                    <div class="knowledge-card" onclick="openReadModal(${knowledgeData.indexOf(item)})">
+                        <div class="card-actions">
+                            <button class="card-action-btn" onclick="event.stopPropagation(); openReadModal(${knowledgeData.indexOf(item)})">📖 阅读全文</button>
+                            <button class="card-action-btn" onclick="event.stopPropagation(); openEditModal(${knowledgeData.indexOf(item)})">✏️ 编辑</button>
+                        </div>
+                        <h3>${item.title}</h3>
+                        <p>${item.content}</p>
+                        <div class="tags">${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+                    </div>`).join('') + `</div>`;
+        }
+
+        // 导入导出
         function exportData() {
-            const data = { categories, knowledgeData };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
+            const blob = new Blob([JSON.stringify({ categories, knowledgeData }, null, 2)], { type: 'application/json' });
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'ic-knowledge-data.json';
+            a.href = URL.createObjectURL(blob);
+            a.download = `ic_data_${new Date().getTime()}.json`;
             a.click();
         }
 
@@ -785,7 +835,7 @@
                     categories = data.categories;
                     knowledgeData = data.knowledgeData;
                     init();
-                    showToast('数据导入成功');
+                    showToast('📥 数据导入成功');
                 }
             };
             reader.readAsText(e.target.files[0]);
@@ -796,24 +846,6 @@
             t.textContent = msg;
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 3000);
-        }
-
-        // 搜索
-        function searchKnowledge() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = knowledgeData.filter(d => d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q) || d.tags.some(t => t.toLowerCase().includes(q)));
-            
-            const main = document.getElementById('mainContent');
-            main.innerHTML = `<h2 class="category-title">搜索结果: ${q}</h2><div class="knowledge-grid">` + 
-                filtered.map((item, i) => `
-                    <div class="knowledge-card" onclick="openReadModal(${knowledgeData.indexOf(item)})">
-                        <div class="card-actions">
-                            <button class="card-action-btn" onclick="event.stopPropagation(); openEditModal(${knowledgeData.indexOf(item)})">✏️ 编辑</button>
-                        </div>
-                        <h3>${item.title}</h3>
-                        <p>${item.content}</p>
-                        <div class="tags">${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-                    </div>`).join('') + `</div>`;
         }
 
         init();
