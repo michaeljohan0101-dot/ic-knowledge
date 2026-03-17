@@ -36,14 +36,15 @@
         header h1 { font-size: 3.2rem; font-weight: 800; background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -1.5px; }
         header p { color: var(--text-muted); font-size: 1.1rem; margin-top: 10px; }
 
-        .toolbar { position: sticky; top: 20px; z-index: 100; max-width: 900px; margin: 0 auto 2rem; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 0.8rem; border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.4); display: flex; justify-content: center; gap: 12px; box-shadow: var(--shadow-lg); }
-        .toolbar button { background: white; color: var(--text-main); border: 1px solid var(--border); padding: 10px 20px; border-radius: var(--radius-md); cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .toolbar { position: sticky; top: 20px; z-index: 100; max-width: 1000px; margin: 0 auto 2rem; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 0.8rem; border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.4); display: flex; justify-content: center; gap: 10px; box-shadow: var(--shadow-lg); flex-wrap: wrap; }
+        .toolbar button { background: white; color: var(--text-main); border: 1px solid var(--border); padding: 10px 18px; border-radius: var(--radius-md); cursor: pointer; font-weight: 700; font-size: 0.8rem; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .toolbar button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-color: var(--primary); }
         .toolbar button.primary { background: var(--primary); color: white; border: none; }
 
-        .sync-badge { position: fixed; top: 20px; right: 20px; padding: 6px 15px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 6px; z-index: 1000; box-shadow: var(--shadow-lg); cursor: pointer; }
-        .sync-badge.online { background: #dcfce7; color: #16a34a; }
-        .sync-badge.offline { background: #fee2e2; color: #ef4444; }
+        .sync-badge { position: fixed; top: 20px; right: 20px; padding: 8px 20px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 8px; z-index: 1000; box-shadow: var(--shadow-lg); cursor: pointer; transition: 0.3s; }
+        .sync-badge.online { background: #dcfce7; color: #16a34a; border: 1px solid #bcf0d1; }
+        .sync-badge.offline { background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; }
+        .sync-badge:active { transform: scale(0.95); }
 
         .search-container { max-width: 600px; margin: 0 auto 3rem; }
         .search-box { display: flex; background: white; border-radius: 100px; padding: 7px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); }
@@ -65,40 +66,42 @@
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-        .modal { background: white; border-radius: 35px; padding: 45px; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; position: relative; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
-        .modal-close { background: #f1f5f9; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; }
+        .modal { background: white; border-radius: 35px; padding: 40px; width: 100%; max-width: 850px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .modal-close { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
 
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.6rem; font-weight: 700; color: var(--text-muted); font-size: 0.85rem; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 15px 22px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 1rem; background: #f8fafc; transition: 0.3s; }
-        .form-group textarea { min-height: 300px; line-height: 1.8; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-muted); font-size: 0.8rem; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 20px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 1rem; background: #f8fafc; transition: 0.3s; }
+        .form-group textarea { min-height: 250px; line-height: 1.7; }
 
-        .btn-group { display: flex; justify-content: flex-end; gap: 12px; margin-top: 3rem; }
-        .btn { padding: 14px 30px; border-radius: 100px; font-weight: 800; cursor: pointer; border: none; transition: 0.3s; }
+        .btn-group { display: flex; justify-content: flex-end; gap: 10px; margin-top: 2rem; }
+        .btn { padding: 12px 25px; border-radius: 100px; font-weight: 800; cursor: pointer; border: none; transition: 0.3s; font-size: 0.9rem; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-ghost { background: #f1f5f9; color: var(--text-muted); }
         .btn-danger { background: #fee2e2; color: #ef4444; }
 
-        .read-content { font-size: 1.2rem; line-height: 1.9; color: #334155; white-space: pre-wrap; }
-        .read-content img { max-width: 100%; border-radius: var(--radius-md); margin: 2rem 0; box-shadow: var(--shadow-lg); }
-
-        .toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 15px 35px; border-radius: 100px; font-weight: 700; z-index: 2000; display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .cat-item { display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 10px 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); }
+        .cat-item input { flex: 1; border: none; background: transparent; font-weight: 600; padding: 5px; }
+        .cat-item input:focus { outline: none; background: white; border-radius: 4px; }
         
-        /* 新增：手动重连按钮样式 */
-        .retry-btn { font-size: 0.7rem; background: rgba(255,255,255,0.2); border: none; padding: 2px 8px; border-radius: 4px; color: inherit; cursor: pointer; margin-left: 5px; }
+        .read-content { font-size: 1.1rem; line-height: 1.8; color: #334155; white-space: pre-wrap; }
+        .read-content img { max-width: 100%; border-radius: var(--radius-md); margin: 1.5rem 0; box-shadow: var(--shadow-lg); }
+
+        .toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 15px 30px; border-radius: 100px; font-weight: 700; z-index: 2000; display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
-    <div id="syncBadge" class="sync-badge offline" onclick="initSupabase()">● 离线模式 <button class="retry-btn">点此重连</button></div>
+    <div id="syncBadge" class="sync-badge offline" onclick="forceReconnect()">● 离线模式 (点击重连)</div>
 
     <header>
         <h1>🔌 IC Community Hub</h1>
-        <p>全球集成电路知识共享库 · 实时云同步</p>
+        <p>全球集成电路知识共享库 · 社区协作</p>
     </header>
 
     <div class="toolbar">
         <button class="primary" onclick="openEditModal(-1)"><span>➕</span> 发布新知识</button>
+        <button onclick="openCatModal()"><span>📁</span> 分类管理</button>
         <button onclick="openSyncModal()"><span>⚙️</span> 协作设置</button>
         <button onclick="fetchCloud()"><span>🔄</span> 刷新云端</button>
         <button onclick="exportData()"><span>📤</span> 导出备份</button>
@@ -115,14 +118,24 @@
 
     <main id="mainContent"></main>
 
-    <!-- 设置模态框 -->
+    <!-- 分类管理模态框 -->
+    <div class="modal-overlay" id="catModal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header"><h2>📁 分类管理</h2><button class="modal-close" onclick="closeM('catModal')">&times;</button></div>
+            <div id="catListContainer"></div>
+            <button class="btn btn-ghost" style="width:100%; margin-top:15px; border: 2px dashed var(--border);" onclick="addNewCategory()">+ 添加新分类</button>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveAllCategories()">保存并应用</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 协作设置模态框 -->
     <div class="modal-overlay" id="syncModal">
         <div class="modal" style="max-width: 500px;">
             <div class="modal-header"><h2>⚙️ 协作设置</h2><button class="modal-close" onclick="closeM('syncModal')">&times;</button></div>
             <div class="form-group"><label>你的社区昵称</label><input type="text" id="syncUser" placeholder="例如: Michael"></div>
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="saveConfig()">保存设置</button>
-            </div>
+            <div class="btn-group"><button class="btn btn-primary" onclick="saveConfig()">保存设置</button></div>
         </div>
     </div>
 
@@ -130,16 +143,16 @@
     <div class="modal-overlay" id="editModal">
         <div class="modal">
             <div class="modal-header"><h2 id="modalTitle">发布新知识</h2><button class="modal-close" onclick="closeM('editModal')">&times;</button></div>
-            <form onsubmit="save(event)">
+            <form onsubmit="saveKnowledge(event)">
                 <input type="hidden" id="editIndex">
-                <div style="display:grid; grid-template-columns: 1fr 2fr; gap:25px;">
+                <div style="display:grid; grid-template-columns: 1fr 2fr; gap:20px;">
                     <div class="form-group"><label>分类</label><select id="editCat"></select></div>
                     <div class="form-group"><label>标题</label><input type="text" id="editTitle" required></div>
                 </div>
                 <div class="form-group"><label>内容 (Ctrl+V 粘贴图片)</label><textarea id="editContent" required onpaste="handlePaste(event)"></textarea></div>
                 <div id="imgPreview" style="display:flex; gap:10px; margin-bottom:1.5rem; flex-wrap:wrap;"></div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-danger" id="delBtn" onclick="del()">撤回</button>
+                    <button type="button" class="btn btn-danger" id="delBtn" onclick="delKnowledge()">撤回</button>
                     <button type="button" class="btn btn-ghost" onclick="closeM('editModal')">取消</button>
                     <button type="submit" class="btn btn-primary">立即发布</button>
                 </div>
@@ -149,36 +162,20 @@
 
     <!-- 阅读模态框 -->
     <div class="modal-overlay" id="readModal">
-        <div class="modal"><button class="modal-close" onclick="closeM('readModal')" style="position:absolute; top:40px; right:40px;">&times;</button><h2 id="readTitle" style="font-size:2.5rem; margin-bottom:2rem;"></h2><div id="readBody" class="read-content"></div><div class="btn-group"><button class="btn btn-ghost" onclick="closeM('readModal')">关闭</button><button class="btn btn-primary" id="editBtnRead">✏️ 编辑</button></div></div>
+        <div class="modal"><button class="modal-close" onclick="closeM('readModal')" style="position:absolute; top:40px; right:40px;">&times;</button><h2 id="readTitle" style="font-size:2rem; margin-bottom:1.5rem;"></h2><div id="readBody" class="read-content"></div><div class="btn-group"><button class="btn btn-ghost" onclick="closeM('readModal')">关闭</button><button class="btn btn-primary" id="editBtnRead">✏️ 编辑</button></div></div>
     </div>
 
     <div class="toast" id="toast"></div>
 
-    <!-- 动态加载脚本：多备选线路 -->
     <script>
-        const CDNS = [
-            "https://npm.elemecdn.com/@supabase/supabase-js@2",
-            "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2",
-            "https://unpkg.com/@supabase/supabase-js@2"
-        ];
-        
-        function loadScript(urls, callback) {
-            if (urls.length === 0) return callback(false);
-            const url = urls.shift();
-            const script = document.createElement('script');
-            script.src = url;
-            script.onload = () => callback(true);
-            script.onerror = () => {
-                console.warn(`CDN 线路失败: ${url}，正在切换下一条...`);
-                loadScript(urls, callback);
-            };
-            document.head.appendChild(script);
-        }
-    </script>
-    
-    <script>
+        // 配置信息
         const SB_URL = "https://hwkvbbrdvlnzwpwovyyi.supabase.co";
         const SB_KEY = "sb_publishable_PR7jsN2qZiZUGOd8SXf3BA_zYJrVz_E";
+        const CDNS = [
+            "https://npm.elemecdn.com/@supabase/supabase-js@2",
+            "https://unpkg.zhimg.com/@supabase/supabase-js@2",
+            "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+        ];
         
         let categories = [{id:'basics', name:'基础概念'}, {id:'design', name:'设计流程'}, {id:'manufacturing', name:'制造工艺'}, {id:'packaging', name:'封装测试'}];
         let knowledgeData = [];
@@ -187,13 +184,39 @@
         let supabaseClient = null;
         let currentUser = localStorage.getItem('ic_nickname') || "探索者";
 
-        window.onload = function() {
-            loadScript([...CDNS], (success) => {
+        // 脚本加载逻辑
+        function loadSupabase(urls, callback) {
+            if (urls.length === 0) return callback(false);
+            const url = urls.shift();
+            console.log("正在尝试线路:", url);
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = () => {
+                console.log("线路连接成功:", url);
+                callback(true);
+            };
+            script.onerror = () => {
+                console.warn("线路失效:", url);
+                loadSupabase(urls, callback);
+            };
+            document.head.appendChild(script);
+        }
+
+        function forceReconnect() {
+            toast("🔄 正在强制重连云端...");
+            loadSupabase([...CDNS], (success) => {
                 if (success) {
                     initSupabase();
+                    toast("✨ 云端重连成功！");
                 } else {
-                    toast("❌ 云协作引擎加载失败，请检查网络");
+                    toast("❌ 所有线路均失效，请检查网络");
                 }
+            });
+        }
+
+        window.onload = function() {
+            loadSupabase([...CDNS], (success) => {
+                if (success) initSupabase();
             });
             updateCatSelect();
             renderNav();
@@ -206,21 +229,30 @@
                     supabaseClient = supabase.createClient(SB_URL, SB_KEY);
                     document.getElementById('syncBadge').className = "sync-badge online";
                     document.getElementById('syncBadge').textContent = "● 社区协作模式";
+                    fetchCategories();
                     fetchCloud();
                 }
-            } catch(e) { console.error("Cloud init fail", e); }
+            } catch(e) { console.error("Supabase 初始化失败", e); }
+        }
+
+        async function fetchCategories() {
+            if(!supabaseClient) return;
+            const { data, error } = await supabaseClient.from('categories').select('*').order('sort_order', { ascending: true });
+            if(!error && data && data.length > 0) {
+                categories = data;
+                updateCatSelect();
+                renderNav();
+            }
         }
 
         async function fetchCloud() {
             if(!supabaseClient) return;
-            toast("🔄 正在同步社区最新知识...");
-            try {
-                const { data, error } = await supabaseClient.from('knowledge').select('*').order('updated_at', { ascending: false });
-                if(!error && data) {
-                    knowledgeData = data;
-                    renderGrid();
-                }
-            } catch(e) { toast("❌ 同步失败"); }
+            toast("🔄 同步云端数据...");
+            const { data, error } = await supabaseClient.from('knowledge').select('*').order('updated_at', { ascending: false });
+            if(!error && data) { 
+                knowledgeData = data; 
+                renderGrid(); 
+            }
         }
 
         function renderNav() {
@@ -247,7 +279,7 @@
                     </div>
                 </div>`;
             });
-            html += `<div class="knowledge-card" style="justify-content:center; align-items:center; border: 2px dashed var(--border); background: transparent;" onclick="openEditModal(-1)"><strong>➕ 发布我的发现</strong></div></div>`;
+            html += `<div class="knowledge-card" style="justify-content:center; align-items:center; border: 2px dashed var(--border); background: transparent;" onclick="openEditModal(-1)"><strong>➕ 发布新发现</strong></div></div>`;
             grid.innerHTML = html;
         }
 
@@ -262,6 +294,7 @@
         }
 
         function openEditModal(idx) {
+            updateCatSelect();
             const isEdit = idx >= 0;
             const item = isEdit ? knowledgeData[idx] : { category: categories[0].id, title: '', content: '', images: [] };
             document.getElementById('editIndex').value = idx;
@@ -287,11 +320,11 @@
             } }
         }
 
-        function renderTempImages() { document.getElementById('imgPreview').innerHTML = tempImages.map((img, i) => `<img src="${img}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">`).join(''); }
+        function renderTempImages() { document.getElementById('imgPreview').innerHTML = tempImages.map(img => `<img src="${img}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">`).join(''); }
 
-        async function save(e) {
+        async function saveKnowledge(e) {
             e.preventDefault();
-            if(!supabaseClient) return toast("❌ 未连接云端，请点击右上角重试");
+            if(!supabaseClient) return toast("❌ 未连接云端，请重连");
             const idx = parseInt(document.getElementById('editIndex').value);
             const data = {
                 id: idx >= 0 ? knowledgeData[idx].id : Math.random().toString(36).substr(2, 9),
@@ -302,32 +335,62 @@
                 author: currentUser,
                 updated_at: new Date()
             };
-            
-            toast("🚀 正在发布...");
             const { error } = await supabaseClient.from('knowledge').upsert(data);
-            if(!error) { closeM('editModal'); fetchCloud(); toast("✨ 发布成功"); } else { toast("❌ 发布失败，请检查数据库权限"); }
+            if(!error) { closeM('editModal'); fetchCloud(); toast("✨ 发布成功"); }
         }
 
-        async function del() {
+        async function delKnowledge() {
             if(!confirm('确定撤回？')) return;
             const idx = document.getElementById('editIndex').value;
-            const { error } = await supabaseClient.from('knowledge').delete().eq('id', knowledgeData[idx].id);
-            if(!error) { closeM('editModal'); fetchCloud(); toast("🗑️ 已撤回"); }
+            await supabaseClient.from('knowledge').delete().eq('id', knowledgeData[idx].id);
+            closeM('editModal'); fetchCloud(); toast("🗑️ 已撤回");
+        }
+
+        function openCatModal() {
+            const container = document.getElementById('catListContainer');
+            container.innerHTML = categories.map((c, i) => `
+                <div class="cat-item">
+                    <input type="text" value="${c.name}" onchange="categories[${i}].name = this.value">
+                    <button class="btn-danger" style="background:transparent; border:none;" onclick="removeCategory(${i})">✕</button>
+                </div>
+            `).join('');
+            document.getElementById('catModal').classList.add('active');
+        }
+
+        function addNewCategory() {
+            categories.push({ id: 'cat_' + Date.now(), name: '新分类', sort_order: categories.length + 1 });
+            openCatModal();
+        }
+
+        function removeCategory(idx) {
+            categories.splice(idx, 1);
+            openCatModal();
+        }
+
+        async function saveAllCategories() {
+            if(!supabaseClient) return;
+            toast("🚀 同步分类...");
+            const { error } = await supabaseClient.from('categories').upsert(categories);
+            if(!error) { closeM('catModal'); fetchCategories(); toast("✨ 更新成功"); }
         }
 
         function saveConfig() {
             currentUser = document.getElementById('syncUser').value.trim() || "探索者";
             localStorage.setItem('ic_nickname', currentUser);
-            closeM('syncModal');
-            toast("✅ 设置已保存");
-            renderGrid();
+            closeM('syncModal'); toast("✅ 已保存"); renderGrid();
         }
 
-        function updateCatSelect() { document.getElementById('editCat').innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join(''); }
+        function updateCatSelect() { 
+            document.getElementById('editCat').innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join(''); 
+        }
         function closeM(id) { document.getElementById(id).classList.remove('active'); }
-        function openSyncModal() { document.getElementById('syncModal').classList.add('active'); }
-        function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3000); }
+        function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2500); }
         function exportData() { const blob = new Blob([JSON.stringify(knowledgeData, null, 2)], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `backup.json`; a.click(); }
+        function search() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = knowledgeData.filter(d => (d.title||'').toLowerCase().includes(q) || (d.content||'').toLowerCase().includes(q));
+            knowledgeData = filtered; renderGrid(); fetchCloud();
+        }
     </script>
 </body>
 </html>
