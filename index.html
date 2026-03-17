@@ -41,7 +41,7 @@
         .toolbar button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-color: var(--primary); }
         .toolbar button.primary { background: var(--primary); color: white; border: none; }
 
-        .sync-badge { position: fixed; top: 20px; right: 20px; padding: 6px 15px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 6px; z-index: 1000; box-shadow: var(--shadow-lg); }
+        .sync-badge { position: fixed; top: 20px; right: 20px; padding: 6px 15px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 6px; z-index: 1000; box-shadow: var(--shadow-lg); cursor: pointer; }
         .sync-badge.online { background: #dcfce7; color: #16a34a; }
         .sync-badge.offline { background: #fee2e2; color: #ef4444; }
 
@@ -84,14 +84,17 @@
         .read-content img { max-width: 100%; border-radius: var(--radius-md); margin: 2rem 0; box-shadow: var(--shadow-lg); }
 
         .toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 15px 35px; border-radius: 100px; font-weight: 700; z-index: 2000; display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        
+        /* 新增：手动重连按钮样式 */
+        .retry-btn { font-size: 0.7rem; background: rgba(255,255,255,0.2); border: none; padding: 2px 8px; border-radius: 4px; color: inherit; cursor: pointer; margin-left: 5px; }
     </style>
 </head>
 <body>
-    <div id="syncBadge" class="sync-badge offline">● 离线模式</div>
+    <div id="syncBadge" class="sync-badge offline" onclick="initSupabase()">● 离线模式 <button class="retry-btn">点此重连</button></div>
 
     <header>
         <h1>🔌 IC Community Hub</h1>
-        <p>全球集成电路知识共享库 · 实时云同步已开启</p>
+        <p>全球集成电路知识共享库 · 实时云同步</p>
     </header>
 
     <div class="toolbar">
@@ -118,7 +121,7 @@
             <div class="modal-header"><h2>⚙️ 协作设置</h2><button class="modal-close" onclick="closeM('syncModal')">&times;</button></div>
             <div class="form-group"><label>你的社区昵称</label><input type="text" id="syncUser" placeholder="例如: Michael"></div>
             <div class="btn-group">
-                <button class="btn btn-primary" onclick="saveConfig()">保存并连接</button>
+                <button class="btn btn-primary" onclick="saveConfig()">保存设置</button>
             </div>
         </div>
     </div>
@@ -151,8 +154,27 @@
 
     <div class="toast" id="toast"></div>
 
-    <!-- 使用更稳定的国内镜像加载 SDK -->
-    <script src="https://npm.elemecdn.com/@supabase/supabase-js@2"></script>
+    <!-- 动态加载脚本：多备选线路 -->
+    <script>
+        const CDNS = [
+            "https://npm.elemecdn.com/@supabase/supabase-js@2",
+            "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2",
+            "https://unpkg.com/@supabase/supabase-js@2"
+        ];
+        
+        function loadScript(urls, callback) {
+            if (urls.length === 0) return callback(false);
+            const url = urls.shift();
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = () => callback(true);
+            script.onerror = () => {
+                console.warn(`CDN 线路失败: ${url}，正在切换下一条...`);
+                loadScript(urls, callback);
+            };
+            document.head.appendChild(script);
+        }
+    </script>
     
     <script>
         const SB_URL = "https://hwkvbbrdvlnzwpwovyyi.supabase.co";
@@ -166,11 +188,19 @@
         let currentUser = localStorage.getItem('ic_nickname') || "探索者";
 
         window.onload = function() {
-            init();
+            loadScript([...CDNS], (success) => {
+                if (success) {
+                    initSupabase();
+                } else {
+                    toast("❌ 云协作引擎加载失败，请检查网络");
+                }
+            });
+            updateCatSelect();
+            renderNav();
+            renderGrid();
         };
 
-        function init() {
-            document.getElementById('syncUser').value = currentUser;
+        function initSupabase() {
             try {
                 if (typeof supabase !== 'undefined') {
                     supabaseClient = supabase.createClient(SB_URL, SB_KEY);
@@ -179,10 +209,6 @@
                     fetchCloud();
                 }
             } catch(e) { console.error("Cloud init fail", e); }
-            
-            updateCatSelect();
-            renderNav();
-            renderGrid();
         }
 
         async function fetchCloud() {
@@ -221,7 +247,7 @@
                     </div>
                 </div>`;
             });
-            html += `<div class="add-card" onclick="openEditModal(-1)"><span>➕</span><strong>发布我的发现</strong></div></div>`;
+            html += `<div class="knowledge-card" style="justify-content:center; align-items:center; border: 2px dashed var(--border); background: transparent;" onclick="openEditModal(-1)"><strong>➕ 发布我的发现</strong></div></div>`;
             grid.innerHTML = html;
         }
 
@@ -265,7 +291,7 @@
 
         async function save(e) {
             e.preventDefault();
-            if(!supabaseClient) return toast("❌ 未连接云端");
+            if(!supabaseClient) return toast("❌ 未连接云端，请点击右上角重试");
             const idx = parseInt(document.getElementById('editIndex').value);
             const data = {
                 id: idx >= 0 ? knowledgeData[idx].id : Math.random().toString(36).substr(2, 9),
@@ -279,7 +305,7 @@
             
             toast("🚀 正在发布...");
             const { error } = await supabaseClient.from('knowledge').upsert(data);
-            if(!error) { closeM('editModal'); fetchCloud(); toast("✨ 发布成功"); } else { toast("❌ 发布失败"); }
+            if(!error) { closeM('editModal'); fetchCloud(); toast("✨ 发布成功"); } else { toast("❌ 发布失败，请检查数据库权限"); }
         }
 
         async function del() {
