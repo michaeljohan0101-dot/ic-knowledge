@@ -5,137 +5,451 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>集成电路知识库 | IC Knowledge Base</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --accent-color: #06b6d4;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --accent: #06b6d4;
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-lg: 20px;
+            --radius-md: 12px;
         }
 
         body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-primary);
+            font-family: 'Inter', 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
+        /* 顶部 Header */
         header {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            color: white; padding: 2.5rem 0; text-align: center;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+            padding: 4rem 1rem 3rem;
+            text-align: center;
         }
 
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* 磨砂工具栏 */
         .toolbar {
-            background: var(--card-bg); padding: 1rem 0; text-align: center;
-            border-bottom: 1px solid var(--border-color);
-            display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;
-            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 0.75rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
         }
 
         .toolbar button {
-            background: var(--primary-color); color: white; border: none;
-            padding: 10px 20px; border-radius: 10px; cursor: pointer;
-            font-weight: 600; transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+            background: white;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .toolbar button:hover { background: var(--secondary-color); transform: translateY(-2px); }
-        .toolbar button.secondary { background: #f1f5f9; color: var(--text-primary); }
+        .toolbar button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
 
-        .search-container { max-width: 700px; margin: 25px auto; padding: 0 20px; }
+        .toolbar button.primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .toolbar button.primary:hover {
+            background: var(--primary-hover);
+        }
+
+        /* 搜索框 */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            padding: 0 20px;
+        }
+
         .search-box {
-            display: flex; background: white; border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05); overflow: hidden; border: 2px solid transparent;
+            display: flex;
+            background: white;
+            border-radius: 100px;
+            padding: 6px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
         }
-        .search-box input { flex: 1; padding: 15px 25px; border: none; font-size: 1rem; outline: none; }
-        .search-box button { background: var(--primary-color); color: white; border: none; padding: 0 25px; cursor: pointer; }
 
-        nav ul { display: flex; justify-content: center; list-style: none; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
-        nav button { background: white; border: 1px solid var(--border-color); padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
-        nav button.active { background: var(--primary-color); color: white; }
+        .search-box:focus-within {
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            border-color: var(--primary);
+        }
 
-        main { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-        .category-title { font-size: 1.8rem; margin-bottom: 20px; border-left: 5px solid var(--primary-color); padding-left: 15px; }
+        .search-box input {
+            flex: 1;
+            padding: 10px 25px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+        }
 
-        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+        .search-box button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* 分类导航 */
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 12px;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        nav button:hover { color: var(--primary); }
+        nav button.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* 知识网格 */
+        main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+        }
+
+        .category-header {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .category-header h2 { font-weight: 800; font-size: 2rem; letter-spacing: -0.5px; }
+
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 30px;
+        }
+
         .knowledge-card {
-            background: var(--card-bg); border-radius: 15px; padding: 25px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid var(--border-color);
-            cursor: pointer; position: relative; transition: 0.3s;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
         }
-        .knowledge-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        
-        .card-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; opacity: 0; transition: 0.3s; }
+
+        .knowledge-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-color: var(--primary);
+        }
+
+        .card-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
         .knowledge-card:hover .card-actions { opacity: 1; }
-        .btn-mini { background: rgba(255,255,255,0.9); border: 1px solid #ddd; padding: 4px 10px; border-radius: 15px; font-size: 0.8rem; cursor: pointer; }
-        .btn-mini:hover { background: var(--primary-color); color: white; }
 
-        .knowledge-card h3 { margin-bottom: 10px; color: var(--primary-color); }
-        .knowledge-card p { color: var(--text-secondary); font-size: 0.95rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+        .btn-icon {
+            background: white;
+            border: 1px solid var(--border);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-        /* 添加卡片样式 */
+        .btn-icon:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .knowledge-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        .knowledge-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag {
+            background: rgba(79, 70, 229, 0.08);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* 添加卡片 */
         .add-card {
-            border: 3px dashed var(--border-color); border-radius: 15px; padding: 40px;
-            text-align: center; cursor: pointer; color: var(--text-secondary);
-            transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.3);
         }
-        .add-card:hover { border-color: var(--primary-color); color: var(--primary-color); background: #f0f9ff; }
-        .add-card span { font-size: 3rem; margin-bottom: 10px; }
 
-        /* 模态框 */
+        .add-card:hover {
+            border-color: var(--primary);
+            background: white;
+            color: var(--primary);
+        }
+
+        .add-card span { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+
+        /* 模态框优化 */
         .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
-        .modal-overlay.active { display: flex; }
-        .modal { background: white; border-radius: 20px; padding: 35px; width: 90%; max-width: 850px; max-height: 90vh; overflow-y: auto; }
 
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 1rem; }
-        .form-group textarea { min-height: 300px; font-family: inherit; line-height: 1.6; }
-        
-        /* 预览区域 */
-        .images-management { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; background: #f8fafc; border-radius: 10px; }
-        .img-thumb { position: relative; width: 80px; height: 80px; border: 2px solid #ddd; border-radius: 8px; overflow: hidden; }
-        .img-thumb img { width: 100%; height: 100%; object-fit: cover; }
-        .img-thumb .del-btn { position: absolute; top: 0; right: 0; background: red; color: white; border: none; width: 20px; cursor: pointer; }
-        .img-thumb .insert-btn { position: absolute; bottom: 0; width: 100%; background: var(--primary-color); color: white; font-size: 0.7rem; border: none; cursor: pointer; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
 
-        /* 阅读视图中的图片 */
-        .read-body img { max-width: 100%; display: block; margin: 15px auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .read-body { font-size: 1.1rem; line-height: 1.8; white-space: pre-wrap; }
+        .modal {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
 
-        .btn-group { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
-        .btn-group button { padding: 10px 25px; border-radius: 10px; cursor: pointer; border: none; font-weight: bold; }
-        .btn-save { background: var(--primary-color); color: white; }
-        .btn-cancel { background: #eee; }
-        .btn-del { background: var(--danger-color); color: white; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        footer { background: #1e293b; color: white; padding: 3rem 0; text-align: center; margin-top: 50px; }
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 30px; border-radius: 30px; display: none; z-index: 2000; }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-close {
+            background: #f1f5f9;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover { background: #fee2e2; color: #ef4444; }
+
+        /* 表单样式 */
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main); font-size: 0.9rem; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 14px 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: 0.3s;
+            background: #f8fafc;
+        }
+
+        .form-group textarea { min-height: 250px; resize: vertical; }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        /* 图片预览区 */
+        .image-manager {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+        }
+
+        .image-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+        .img-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .img-item img { width: 100%; height: 100%; object-fit: cover; }
+        .img-item .remove {
+            position: absolute; top: 2px; right: 2px; background: rgba(239, 68, 68, 0.9);
+            color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer;
+        }
+        .img-item .insert {
+            position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(79, 70, 229, 0.9);
+            color: white; border: none; font-size: 0.6rem; padding: 2px 0; cursor: pointer;
+        }
+
+        /* 阅读视图 */
+        .read-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; line-height: 1.1; }
+        .read-content { font-size: 1.15rem; line-height: 1.8; color: #334155; white-space: pre-wrap; }
+        .read-content img { max-width: 100%; border-radius: var(--radius-md); margin: 2rem 0; box-shadow: var(--shadow-lg); display: block; }
+
+        .btn-group { display: flex; justify-content: flex-end; gap: 12px; margin-top: 3rem; }
+        .btn {
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-ghost { background: #f1f5f9; color: var(--text-muted); }
+        .btn-danger { background: #fee2e2; color: #ef4444; }
+
+        footer { text-align: center; padding: 4rem 1rem; color: var(--text-muted); font-size: 0.9rem; }
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--text-main); color: white; padding: 12px 30px;
+            border-radius: 100px; font-weight: 600; z-index: 2000; display: none;
+            box-shadow: var(--shadow-lg); animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { transform: translate(-50%, 50px); opacity: 0; } }
     </style>
 </head>
 <body>
-    <header><h1>🔌 集成电路知识库</h1><p>IC Knowledge Base · 你的移动半导体百科</p></header>
+    <header>
+        <h1>🔌 IC Knowledge Base</h1>
+        <p>集成电路知识库 · 赋能芯片探索之旅</p>
+    </header>
 
     <div class="toolbar">
-        <button onclick="openEditModal(-1)">➕ 添加新知识</button>
-        <button class="secondary" onclick="openCatModal()">📂 管理分类</button>
-        <button class="secondary" onclick="exportData()">📤 导出数据</button>
-        <button class="secondary" onclick="document.getElementById('importFile').click()">📥 导入数据</button>
+        <button class="primary" onclick="openEditModal(-1)"><span>➕</span> 添加知识</button>
+        <button onclick="openCatModal()"><span>📂</span> 分类管理</button>
+        <button onclick="exportData()"><span>📤</span> 导出</button>
+        <button onclick="document.getElementById('importFile').click()"><span>📥</span> 导入</button>
         <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
     </div>
 
     <div class="search-container">
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="搜索知识点..." onkeyup="if(event.key==='Enter')search()">
+            <input type="text" id="searchInput" placeholder="搜索任何知识点..." onkeyup="if(event.key==='Enter')search()">
             <button onclick="search()">🔍</button>
         </div>
     </div>
@@ -144,30 +458,42 @@
 
     <main id="mainContent"></main>
 
-    <!-- 编辑模态框 -->
+    <footer>
+        <p>© 2026 Michael Johan · Built with Passion & Precision</p>
+    </footer>
+
+    <!-- 编辑/添加模态框 -->
     <div class="modal-overlay" id="editModal">
         <div class="modal">
-            <h2 id="modalTitle" style="margin-bottom:20px;">编辑知识</h2>
+            <div class="modal-header">
+                <h2 id="modalTitle">编辑知识</h2>
+                <button class="modal-close" onclick="closeM('editModal')">&times;</button>
+            </div>
             <form onsubmit="save(event)">
                 <input type="hidden" id="editIndex">
-                <div class="form-group"><label>分类</label><select id="editCat"></select></div>
-                <div class="form-group"><label>标题</label><input type="text" id="editTitle" required></div>
-                <div class="form-group">
-                    <label>详细内容 (支持 Ctrl+V 粘贴图片到光标位置)</label>
-                    <textarea id="editContent" required onpaste="handlePaste(event)"></textarea>
+                <div style="display:grid; grid-template-columns: 1fr 2fr; gap:20px;">
+                    <div class="form-group"><label>所属分类</label><select id="editCat"></select></div>
+                    <div class="form-group"><label>标题</label><input type="text" id="editTitle" required placeholder="输入引人注目的标题"></div>
                 </div>
                 
-                <label>已上传的图片 (点击图片下方的按钮可插入到文字中)</label>
-                <div class="images-management" id="editImagesList"></div>
-                <input type="file" id="imgInput" style="display:none" accept="image/*" onchange="handleFile(event)">
-                <button type="button" onclick="document.getElementById('imgInput').click()" style="margin-top:10px; padding:5px 10px; cursor:pointer;">📎 上传/添加图片</button>
+                <div class="form-group">
+                    <label>详细内容 (支持 Ctrl+V 直接粘贴图片)</label>
+                    <textarea id="editContent" required onpaste="handlePaste(event)" placeholder="在这里开始你的探索记录..."></textarea>
+                </div>
 
-                <div class="form-group" style="margin-top:20px;"><label>标签 (逗号分隔)</label><input type="text" id="editTags"></div>
-                
+                <div class="image-manager">
+                    <label>图片资产库</label>
+                    <div class="image-grid" id="editImagesList"></div>
+                    <button type="button" class="btn btn-ghost" onclick="document.getElementById('imgInput').click()" style="margin-top:15px; font-size:0.8rem;">📎 上传新图片</button>
+                    <input type="file" id="imgInput" style="display:none" accept="image/*" onchange="handleFile(event)">
+                </div>
+
+                <div class="form-group"><label>标签 (逗号分隔)</label><input type="text" id="editTags" placeholder="例如: 7nm, 光刻, ASML"></div>
+
                 <div class="btn-group">
-                    <button type="button" class="btn-del" id="delBtn" onclick="del()">🗑️ 删除</button>
-                    <button type="button" class="btn-cancel" onclick="closeM('editModal')">取消</button>
-                    <button type="submit" class="btn-save">💾 保存并关闭</button>
+                    <button type="button" class="btn btn-danger" id="delBtn" onclick="del()">删除</button>
+                    <button type="button" class="btn btn-ghost" onclick="closeM('editModal')">取消</button>
+                    <button type="submit" class="btn btn-primary">保存知识点</button>
                 </div>
             </form>
         </div>
@@ -176,28 +502,26 @@
     <!-- 阅读全文模态框 -->
     <div class="modal-overlay" id="readModal">
         <div class="modal">
-            <div style="display:flex; justify-content:space-between; margin-bottom:20px; border-bottom:2px solid #eee; padding-bottom:10px;">
-                <h2 id="readTitle">详情</h2>
-                <button onclick="closeM('readModal')" style="border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
-            </div>
-            <div id="readBody" class="read-body"></div>
-            <div id="readTags" style="margin-top:20px; display:flex; gap:8px; flex-wrap:wrap;"></div>
+            <button class="modal-close" onclick="closeM('readModal')" style="position:absolute; top:30px; right:30px;">&times;</button>
+            <h2 id="readTitle" class="read-title">详情</h2>
+            <div id="readTags" class="tag-list" style="margin-bottom:2.5rem;"></div>
+            <div id="readBody" class="read-content"></div>
             <div class="btn-group">
-                <button class="btn-cancel" onclick="closeM('readModal')">关闭</button>
-                <button class="btn-save" id="editBtnRead">✏️ 编辑</button>
+                <button class="btn btn-ghost" onclick="closeM('readModal')">完成阅读</button>
+                <button class="btn btn-primary" id="editBtnRead">✏️ 编辑内容</button>
             </div>
         </div>
     </div>
 
-    <!-- 分类管理模态框 -->
+    <!-- 分类管理 -->
     <div class="modal-overlay" id="catModal">
         <div class="modal" style="max-width:500px;">
-            <h2 style="margin-bottom:20px;">管理分类</h2>
-            <div id="catList" style="margin-bottom:20px;"></div>
-            <button onclick="addCatRow()" style="width:100%; padding:10px; margin-bottom:10px; cursor:pointer;">➕ 添加新分类</button>
+            <div class="modal-header"><h2>分类管理</h2><button class="modal-close" onclick="closeM('catModal')">&times;</button></div>
+            <div id="catList"></div>
+            <button class="btn btn-ghost" onclick="addCatRow()" style="width:100%; margin:20px 0;">➕ 添加新分类</button>
             <div class="btn-group">
-                <button class="btn-cancel" onclick="closeM('catModal')">取消</button>
-                <button class="btn-save" onclick="saveCats()">保存更改</button>
+                <button class="btn btn-ghost" onclick="closeM('catModal')">取消</button>
+                <button class="btn btn-primary" onclick="saveCats()">保存分类</button>
             </div>
         </div>
     </div>
@@ -205,7 +529,7 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        let categories = [{id:'basics', name:'基础概念'}, {id:'design', name:'设计流程'}, {id:'manufacturing', name:'制造工艺'}];
+        let categories = [{id:'basics', name:'基础概念'}, {id:'design', name:'设计流程'}, {id:'manufacturing', name:'制造工艺'}, {id:'packaging', name:'封装测试'}];
         let knowledgeData = [];
         let currentCat = 'all';
         let tempImages = [];
@@ -213,6 +537,10 @@
         function init() {
             renderNav();
             renderGrid();
+            updateCatSelect();
+        }
+
+        function updateCatSelect() {
             document.getElementById('editCat').innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
         }
 
@@ -231,23 +559,21 @@
             const grid = document.getElementById('mainContent');
             const filtered = currentCat === 'all' ? knowledgeData : knowledgeData.filter(d => d.category === currentCat);
             
-            let html = `<h2 class="category-title">${currentCat==='all'?'全部知识':categories.find(c=>c.id===currentCat).name}</h2>`;
+            let html = `<div class="category-header"><h2>${currentCat==='all'?'全部知识点':categories.find(c=>c.id===currentCat).name}</h2><span style="color:var(--text-muted); font-weight:600;">${filtered.length} 条</span></div>`;
             html += `<div class="knowledge-grid">`;
             filtered.forEach(item => {
                 const idx = knowledgeData.indexOf(item);
                 html += `
                     <div class="knowledge-card" onclick="openRead(${idx})">
                         <div class="card-actions">
-                            <button class="btn-mini" onclick="event.stopPropagation(); openRead(${idx})">📖 阅读全文</button>
-                            <button class="btn-mini" onclick="event.stopPropagation(); openEditModal(${idx})">✏️ 编辑</button>
+                            <button class="btn-icon" onclick="event.stopPropagation(); openEditModal(${idx})">✏️</button>
                         </div>
                         <h3>${item.title}</h3>
-                        <p>${item.content.replace(/\[\[图片\d+\]\]/g, '[图片]')}</p>
+                        <p>${item.content.replace(/\[\[图片\d+\]\]/g, '[图片资产]')}</p>
+                        <div class="tag-list">${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
                     </div>`;
             });
-            // 补全添加方块
-            html += `<div class="add-card" onclick="openEditModal(-1)"><span>➕</span><strong>添加新知识</strong></div>`;
-            html += `</div>`;
+            html += `<div class="add-card" onclick="openEditModal(-1)"><span>➕</span><strong>新增探索</strong></div></div>`;
             grid.innerHTML = html;
         }
 
@@ -256,13 +582,12 @@
             document.getElementById('readTitle').textContent = item.title;
             let contentHtml = item.content;
             if (item.images && item.images.length > 0) {
-                item.images.forEach((imgBase64, i) => {
-                    const placeholder = `[[图片${i+1}]]`;
-                    contentHtml = contentHtml.split(placeholder).join(`<img src="${imgBase64}" alt="图片">`);
+                item.images.forEach((img, i) => {
+                    contentHtml = contentHtml.split(`[[图片${i+1}]]`).join(`<img src="${img}" alt="Asset">`);
                 });
             }
             document.getElementById('readBody').innerHTML = contentHtml;
-            document.getElementById('readTags').innerHTML = item.tags.map(t => `<span style="background:#eff6ff; color:#2563eb; padding:4px 10px; border-radius:10px; font-size:0.8rem;">#${t}</span>`).join('');
+            document.getElementById('readTags').innerHTML = item.tags.map(t => `<span class="tag">${t}</span>`).join('');
             document.getElementById('editBtnRead').onclick = () => { closeM('readModal'); openEditModal(idx); };
             document.getElementById('readModal').classList.add('active');
         }
@@ -277,7 +602,7 @@
             document.getElementById('editTags').value = item.tags.join(', ');
             tempImages = item.images ? [...item.images] : [];
             renderEditImages();
-            document.getElementById('modalTitle').textContent = isEdit ? '✏️ 编辑知识' : '➕ 添加新知识';
+            document.getElementById('modalTitle').textContent = isEdit ? '编辑知识点' : '新增探索';
             document.getElementById('delBtn').style.display = isEdit ? 'block' : 'none';
             document.getElementById('editModal').classList.add('active');
         }
@@ -286,10 +611,9 @@
             const items = (e.clipboardData || e.originalEvent.clipboardData).items;
             for (let item of items) {
                 if (item.type.indexOf('image') !== -1) {
-                    const blob = item.getAsFile();
                     const reader = new FileReader();
                     reader.onload = (event) => addImageToEditor(event.target.result);
-                    reader.readAsDataURL(blob);
+                    reader.readAsDataURL(item.getAsFile());
                 }
             }
         }
@@ -314,9 +638,10 @@
         function renderEditImages() {
             const list = document.getElementById('editImagesList');
             list.innerHTML = tempImages.map((img, i) => `
-                <div class="img-thumb">
-                    <img src="${img}"><button type="button" class="del-btn" onclick="removeImg(${i})">&times;</button>
-                    <button type="button" class="insert-btn" onclick="insertPlaceholder(${i+1})">插到光标</button>
+                <div class="img-item">
+                    <img src="${img}">
+                    <button type="button" class="remove" onclick="removeImg(${i})">&times;</button>
+                    <button type="button" class="insert" onclick="insertPlaceholder(${i+1})">插入此处</button>
                 </div>`).join('');
         }
 
@@ -338,23 +663,18 @@
                 images: [...tempImages]
             };
             if (idx >= 0) knowledgeData[idx] = data; else knowledgeData.push(data);
-            closeM('editModal'); renderGrid(); toast('✅ 已保存');
+            closeM('editModal'); renderGrid(); toast('✨ 知识已妥善保存');
         }
 
-        function del() {
-            if (confirm('确认删除？')) {
-                knowledgeData.splice(document.getElementById('editIndex').value, 1);
-                closeM('editModal'); renderGrid(); toast('🗑️ 已删除');
-            }
-        }
+        function del() { if (confirm('确定要删除这条珍贵的记录吗？')) { knowledgeData.splice(document.getElementById('editIndex').value, 1); closeM('editModal'); renderGrid(); toast('🗑️ 记录已移除'); } }
 
         function openCatModal() {
             const list = document.getElementById('catList');
-            list.innerHTML = categories.map((c, i) => `<div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" value="${c.id}" class="cat-id-in" style="width:80px;"><input type="text" value="${c.name}" class="cat-name-in" style="flex:1;"><button onclick="this.parentElement.remove()" style="color:red; border:none; background:none; cursor:pointer;">&times;</button></div>`).join('');
+            list.innerHTML = categories.map((c, i) => `<div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" value="${c.id}" class="cat-id-in" style="width:100px; font-weight:700;"><input type="text" value="${c.name}" class="cat-name-in" style="flex:1;"><button onclick="this.parentElement.remove()" style="color:#ef4444; border:none; background:none; cursor:pointer; font-size:1.2rem;">&times;</button></div>`).join('');
             document.getElementById('catModal').classList.add('active');
         }
 
-        function addCatRow() { document.getElementById('catList').innerHTML += `<div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" placeholder="id" class="cat-id-in" style="width:80px;"><input type="text" placeholder="名称" class="cat-name-in" style="flex:1;"><button onclick="this.parentElement.remove()" style="color:red; border:none; background:none; cursor:pointer;">&times;</button></div>`; }
+        function addCatRow() { document.getElementById('catList').innerHTML += `<div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" placeholder="ID" class="cat-id-in" style="width:100px; font-weight:700;"><input type="text" placeholder="分类名称" class="cat-name-in" style="flex:1;"><button onclick="this.parentElement.remove()" style="color:#ef4444; border:none; background:none; cursor:pointer; font-size:1.2rem;">&times;</button></div>`; }
 
         function saveCats() {
             const newCats = [];
@@ -363,22 +683,22 @@
                 const name = row.querySelector('.cat-name-in').value.trim();
                 if (id && name) newCats.push({ id, name });
             });
-            categories = newCats; init(); closeM('catModal'); toast('📂 分类已更新');
+            categories = newCats; init(); closeM('catModal'); updateCatSelect(); toast('📂 分类结构已更新');
         }
 
         function closeM(id) { document.getElementById(id).classList.remove('active'); }
 
         function search() {
             const q = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = knowledgeData.filter(d => d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q));
+            const filtered = knowledgeData.filter(d => d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q) || d.tags.some(t => t.toLowerCase().includes(q)));
             const grid = document.getElementById('mainContent');
-            grid.innerHTML = `<h2 class="category-title">🔍 搜索: ${q}</h2><div class="knowledge-grid">` + 
-                filtered.map(item => `<div class="knowledge-card" onclick="openRead(${knowledgeData.indexOf(item)})"><h3>${item.title}</h3><p>${item.content.replace(/\[\[图片\d+\]\]/g, '[图片]')}</p></div>`).join('') + `<div class="add-card" onclick="openEditModal(-1)"><span>➕</span><strong>添加新知识</strong></div></div>`;
+            grid.innerHTML = `<div class="category-header"><h2>🔍 搜索结果: ${q}</h2><span style="color:var(--text-muted); font-weight:600;">${filtered.length} 条</span></div><div class="knowledge-grid">` + 
+                filtered.map(item => `<div class="knowledge-card" onclick="openRead(${knowledgeData.indexOf(item)})"><div class="card-actions"><button class="btn-icon">✏️</button></div><h3>${item.title}</h3><p>${item.content.replace(/\[\[图片\d+\]\]/g, '[图片]')}</p></div>`).join('') + `<div class="add-card" onclick="openEditModal(-1)"><span>➕</span><strong>新增探索</strong></div></div>`;
         }
 
         function exportData() {
             const blob = new Blob([JSON.stringify({ categories, knowledgeData }, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `ic_data_${new Date().getTime()}.json`; a.click();
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `ic_vault_backup.json`; a.click();
         }
 
         function importData(e) {
@@ -386,7 +706,7 @@
             reader.onload = (ev) => {
                 const data = JSON.parse(ev.target.result);
                 categories = data.categories; knowledgeData = data.knowledgeData;
-                init(); toast('📥 数据已导入');
+                init(); updateCatSelect(); toast('📥 数据资产已同步');
             };
             reader.readAsText(e.target.files[0]);
         }
