@@ -83,7 +83,7 @@
         .read-content { font-size: 1.2rem; line-height: 1.9; color: #334155; white-space: pre-wrap; }
         .read-content img { max-width: 100%; border-radius: var(--radius-md); margin: 2rem 0; box-shadow: var(--shadow-lg); }
 
-        .toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 15px 35px; border-radius: 100px; font-weight: 700; z-index: 2000; display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); animation: slideUp 0.4s ease; }
+        .toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 15px 35px; border-radius: 100px; font-weight: 700; z-index: 2000; display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -151,8 +151,8 @@
 
     <div class="toast" id="toast"></div>
 
-    <!-- 加载 SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- 使用更稳定的国内镜像加载 SDK -->
+    <script src="https://npm.elemecdn.com/@supabase/supabase-js@2"></script>
     
     <script>
         const SB_URL = "https://hwkvbbrdvlnzwpwovyyi.supabase.co";
@@ -165,7 +165,6 @@
         let supabaseClient = null;
         let currentUser = localStorage.getItem('ic_nickname') || "探索者";
 
-        // 窗口加载完成后初始化
         window.onload = function() {
             init();
         };
@@ -178,8 +177,6 @@
                     document.getElementById('syncBadge').className = "sync-badge online";
                     document.getElementById('syncBadge').textContent = "● 社区协作模式";
                     fetchCloud();
-                } else {
-                    console.error("Supabase SDK not loaded");
                 }
             } catch(e) { console.error("Cloud init fail", e); }
             
