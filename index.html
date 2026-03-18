@@ -374,6 +374,11 @@
             if(!error) { closeM('catModal'); fetchCategories(); toast("✨ 更新成功"); }
         }
 
+        function openSyncModal() {
+            document.getElementById('syncUser').value = currentUser;
+            document.getElementById('syncModal').classList.add('active');
+        }
+
         function saveConfig() {
             currentUser = document.getElementById('syncUser').value.trim() || "探索者";
             localStorage.setItem('ic_nickname', currentUser);
